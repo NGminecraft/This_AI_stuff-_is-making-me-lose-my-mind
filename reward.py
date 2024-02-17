@@ -53,6 +53,7 @@ class Reward(tf.keras.Model):
     def call(self, inputs, training=False):
         outputs = []
         prev_val = 0
+        print(inputs)
         for i in inputs:
             outputs.append(self.train_model(i, prev_val))
             print(prev_val)
@@ -86,7 +87,6 @@ class Reward(tf.keras.Model):
         max_length = max(len(seq) for seq in inputs)
         inputs = keras.preprocessing.sequence.pad_sequences(inputs, maxlen=max_length)
         emotions = np.array(self.data_train["Emotion"].values.astype(int))
-        print(emotions)
         use_model.fit(x=inputs, y=emotions, batch_size=1, epochs=1)
         if save == True:
             self.save(use_model, id=id)
@@ -116,7 +116,7 @@ class Reward(tf.keras.Model):
                 model = keras.Sequential()
                 model.add(keras.layers.Hashing(num_bins=len(self.data_train["Emotion"]), output_mode="int"))
                 model.add(keras.Input(shape=(2,)))
-                model.add(keras.layers.Conv1D(64, 5, activation =i))
+                model.add(keras.layers.Conv1D(2, 5, activation =i))
                 model.add(keras.layers.Dense(5, activation=i))
                 model.add(keras.layers.Dense(5, activation =i))
                 model.add(keras.layers.Dense(3, activation =i))
