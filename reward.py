@@ -55,9 +55,10 @@ class Reward(tf.keras.Model):
         prev_val = 0
         print(inputs)
         for i in inputs:
-            outputs.append(self.train_model(i, prev_val))
+            print((1, i, prev_val))
+            outputs.append(self.train_model(1, i, prev_val))
             print(prev_val)
-            prev_val = outputs[-1]
+            prev_val = outputs
         print(outputs)
         return self.train_model(inputs)
 
@@ -86,6 +87,7 @@ class Reward(tf.keras.Model):
         inputs = self.tokenizer.texts_to_sequences(self.data_train["Text"].to_list())
         max_length = max(len(seq) for seq in inputs)
         inputs = keras.preprocessing.sequence.pad_sequences(inputs, maxlen=max_length)
+        inputs = tf.cast(inputs, dtype=tf.float32)
         emotions = np.array(self.data_train["Emotion"].values.astype(int))
         use_model.fit(x=inputs, y=emotions, batch_size=1, epochs=1)
         if save == True:
@@ -114,12 +116,14 @@ class Reward(tf.keras.Model):
         for j in losses:
             for i in activations:
                 model = keras.Sequential()
-                model.add(keras.layers.Hashing(num_bins=len(self.data_train["Emotion"]), output_mode="int"))
-                model.add(keras.Input(shape=(2,)))
-                model.add(keras.layers.Conv1D(2, 5, activation =i))
-                model.add(keras.layers.Dense(5, activation=i))
-                model.add(keras.layers.Dense(5, activation =i))
-                model.add(keras.layers.Dense(3, activation =i))
+                model.add(keras.Input(shape=(1, 188), name="Input", batch_size=1))
+                model.add(keras.layers.Reshape((1, 188)))
+                model.add(keras.layers.Conv1D(2, 1, activation =i))
+                model.add(keras.layers.Flatten())
+                model.add(keras.layers.Reshape((1 ,2)))
+                model.add(keras.layers.Dense(2, activation=i))
+                model.add(keras.layers.Dense(2, activation =i))
+                model.add(keras.layers.Dense(2, activation =i))
                 model.add(keras.layers.Dense(1, activation=i))
                 model.compile(loss=j, optimizer='adam', metrics=["accuracy"])
                 self.train(model)
