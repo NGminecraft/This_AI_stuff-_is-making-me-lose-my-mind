@@ -2,7 +2,10 @@ import keras
 import pandas as pd
 import os
 import tensorflow as tf
+import numpy as np
 
+def format(word):
+    pass
 
 def init_model():
     if os.path.exists('data//reward//models//model.keras'):
@@ -75,9 +78,18 @@ class Reward:
             tokenizer_sentences.append(i) 
         for i in test_data["Text"]:
             tokenizer_sentences.append(i)
-        tokenizer = keras.preprocessing.text.Tokenizer()
+        tokenizer = keras.preprocessing.text.Tokenizer(filters="():", lower=True, )
         tokenizer.fit_on_texts(tokenizer_sentences)
-        input_indices = [].append(tokenizer.word_index.get(i) for i in train_data)
+        c=[]
+        for i in train_data["Text"]:
+            b = []
+            for j in i:
+                if tokenizer.word_index.get(j.lower()) == None:
+                    print(j, i)
+                b.append(tokenizer.word_index.get(j.lower()))
+            c.append(b)
+        input_indices = np.asanyarray([].append(tokenizer.word_index.get(i) for i in train_data["Text"]))
+        print(input_indices.shape, "HI")
         
         model.fit(x=[input_indices, 1, 1], y=train_data["Emotion"], validation_data=[].append(tokenizer.word_index.get(i) for i in test_data))
         
