@@ -8,7 +8,7 @@ def format(word):
     pass
 
 def init_model():
-    if os.path.exists('data//reward//models//model.keras'):
+    if os.path.exists('data/reward/models/model.keras'):
         return keras.saving.load_model('data//reward//models//model.keras'), True
     else:
         return keras.Sequential(), False
@@ -42,10 +42,10 @@ class Reward:
             self.build_model()
     
     def init_train_data(self):
-        self.data_train = load_data("data_train.csv")
+        self.data_train = load_data("TrainingData/data_train.csv")
 
     def init_train_test(self):
-        self.data_test = load_data("data_test.csv")
+        self.data_test = load_data("TraningData/data_test.csv")
     
     def build_model(self):
         word_input = keras.layers.Input(shape=(1,), name="Word_Input")
@@ -85,12 +85,10 @@ class Reward:
             b = []
             for j in i:
                 if tokenizer.word_index.get(j.lower()) == None:
-                    print(j, i)
-                b.append(tokenizer.word_index.get(j.lower()))
+                    b.append(tokenizer.word_index.get(j.lower()))
             c.append(b)
-        input_indices = np.asanyarray([].append(tokenizer.word_index.get(i) for i in train_data["Text"]))
-        print(input_indices.shape, "HI")
-        
+        print(c)
+        input_indices = np.asarray(c)
         model.fit(x=[input_indices, 1, 1], y=train_data["Emotion"], validation_data=[].append(tokenizer.word_index.get(i) for i in test_data))
         
         
