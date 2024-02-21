@@ -1,6 +1,7 @@
 from utils.Hasher.hasher import Hasher
 from Reward.reward2 import Reward
 import logging
+import sys
 
 try:
     with open("logs/Info.log", 'r') as log:
@@ -16,7 +17,7 @@ except FileNotFoundError:
 logger = logging.getLogger('MainLogger')
 logger.setLevel(logging.DEBUG)
 
-console_handler = logging.StreamHandler()
+console_handler = logging.StreamHandler(stream=sys.stdout)
 console_handler.setLevel(logging.INFO)
 
 info_file_handler = logging.FileHandler('logs/Info.log')
