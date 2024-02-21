@@ -3,7 +3,8 @@ import pandas as pd
 import os
 import tensorflow as tf
 import numpy as np
-
+from tqdm import tqdm
+import logging
 def format(word):
     pass
 
@@ -33,8 +34,9 @@ def load_data(file):
 
 
 class Reward:
-    def __init__(self):
-        self.tokenizer = keras.preprocessing.text.Tokenizer(num_words=1000,  filters='!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n', lower=True,  split=' ', char_level=False)
+    def __init__(self, str_obj):
+        self.tokenizer = str_obj.hash_text
+        self.padding = str_obj.padding
         self.model, built = init_model()
         self.init_train_data()
         self.init_train_test()
@@ -42,10 +44,10 @@ class Reward:
             self.build_model()
     
     def init_train_data(self):
-        self.data_train = load_data("TrainingData/data_train.csv")
+        self.data_train = load_data("Reward/Data/TrainingData/data_train.csv")
 
     def init_train_test(self):
-        self.data_test = load_data("TraningData/data_test.csv")
+        self.data_test = load_data("Reward/Data/TrainingData/data_test.csv")
     
     def build_model(self):
         word_input = keras.layers.Input(shape=(1,), name="Word_Input")
@@ -70,26 +72,49 @@ class Reward:
         model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
         
         model.summary()
-        
-        train_data = pd.read_csv("data_train.csv")
-        test_data = pd.read_csv("data_test.csv")
-        tokenizer_sentences = []
-        for i in train_data["Text"]:
-            tokenizer_sentences.append(i) 
-        for i in test_data["Text"]:
-            tokenizer_sentences.append(i)
-        tokenizer = keras.preprocessing.text.Tokenizer(filters="():", lower=True, )
-        tokenizer.fit_on_texts(tokenizer_sentences)
-        c=[]
-        for i in train_data["Text"]:
-            b = []
-            for j in i:
-                if tokenizer.word_index.get(j.lower()) == None:
-                    b.append(tokenizer.word_index.get(j.lower()))
-            c.append(b)
-        print(c)
-        input_indices = np.asarray(c)
-        model.fit(x=[input_indices, 1, 1], y=train_data["Emotion"], validation_data=[].append(tokenizer.word_index.get(i) for i in test_data))
-        
-        
-Reward()
+
+        if os.path.exists("Reward/Data/TrainingData/InputsandOutputs/inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/outputs.npy"):
+            logging.log(logging.INFO, "Loading data from the npy files")
+            input_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/inputs.npy")
+            logging.log(logging.INFO, f"Loaded input matrix of shape {input_indices.shape}")
+            output_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/outputs.npy")
+            logging.log(logging.INFO, f"Loaded output matrix of shape {output_indices.shape}")
+            validation_input_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/validation_inputs.npy")
+            logging.log(logging.INFO, f"Loaded validation input matrix of shape {validation_input_indices.shape}")
+            validation_output_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy")
+            logging.log(logging.INFO, f"Loaded validation output matrix of shape {validation_output_indices.shape}")
+        else:
+            input_length = 1500
+            train_data = pd.read_csv("Reward/Data/TrainingData/data_train.csv")
+            test_data = pd.read_csv("Reward/Data/TrainingData/data_test.csv")
+            input_indices = np.array([0]*input_length)
+            for i in tqdm(train_data["Text"], desc="Creating The Input Matrix"):
+                try:
+                    input_indices = np.vstack((input_indices, self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
+                except ValueError:
+                    print(self.padding(list(self.tokenizer(j) for j in i), input_length, 0))
+                    print(len(self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
+            np.save("Reward/Data/TrainingData/InputsandOutputs/inputs", input_indices, allow_pickle=True)
+            output_indices = np.array([[0]])
+            for i in tqdm(train_data["Emotion"], desc="Creating The Output Matrix"):
+                output_indices = np.vstack(i)
+            np.save("Reward/Data/TrainingData/InputsandOutputs/outputs", output_indices, allow_pickle=True)
+
+
+
+            input_length = 1500
+            validation_input_indices = np.array([0]*input_length)
+            for i in tqdm(test_data["Text"], desc="Creating The Validation Input Matrix"):
+                try:
+                    validation_input_indices = np.vstack((validation_input_indices, self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
+                except ValueError:
+                    print(self.padding(list(self.tokenizer(j) for j in i), input_length, 0))
+                    print(len(self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
+            np.save("Reward/Data/TrainingData/InputsandOutputs/validation_inputs", validation_input_indices, allow_pickle=True)
+            validation_output_indices = np.array([[0]])
+            for i in tqdm(train_data["Emotion"], desc="Creating The Validation Output Matrix"):
+                validation_output_indices = np.vstack(i)
+            np.save("Reward/Data/TrainingData/InputsandOutputs/validation_outputs", validation_output_indices,
+                    allow_pickle=True)
+
+        model.fit(x=[input_indices, 1, 1], y=output_indices, validation_data=(validation_input_indices, validation_output_indices))

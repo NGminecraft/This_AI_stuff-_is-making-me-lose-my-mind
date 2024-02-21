@@ -71,10 +71,10 @@ class Reward(tf.keras.Model):
         return loss
 
     def init_train_data(self):
-        self.data_train = load_data("data_train.csv")
+        self.data_train = load_data("Data/TrainingData/data_train.csv")
 
     def init_train_test(self):
-        self.data_test = load_data("data_test.csv")
+        self.data_test = load_data("Data/TrainingData/data_test.csv")
 
     def train(self, model=None, save=False, id="trained"):
         if model:

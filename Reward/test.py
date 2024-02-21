@@ -9,7 +9,7 @@ def format(word):
     return ''.join(item)
     
     
-x = pd.read_csv("data_train.csv")
+x = pd.read_csv("Data/TrainingData/data_train.csv")
 result = []
 for i in x["Text"]:
     i = i.split(' ')
@@ -18,7 +18,7 @@ for i in x["Text"]:
         if j not in result:
             result.append(j)
         
-y = pd.read_csv("data_test.csv")
+y = pd.read_csv("Data/TrainingData/data_test.csv")
 for i in y["Text"]:
     i = i.split(' ')
     for j in i:

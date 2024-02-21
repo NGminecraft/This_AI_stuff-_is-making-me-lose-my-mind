@@ -1,0 +1,5 @@
+INFO:root:Loading data from the npy files
+INFO:root:Loaded input matrix of size 11901000
+INFO:root:Loaded output matrix of size 5
+INFO:root:Loaded validation input matrix of size 5091000
+INFO:root:Loaded validation output matrix of size 5

@@ -1,0 +1,5 @@
+INFO:root:Loading data from the npy files
+INFO:root:Loaded input matrix of shape (7934, 1500)
+INFO:root:Loaded output matrix of shape (5, 1)
+INFO:root:Loaded validation input matrix of shape (3394, 1500)
+INFO:root:Loaded validation output matrix of shape (5, 1)

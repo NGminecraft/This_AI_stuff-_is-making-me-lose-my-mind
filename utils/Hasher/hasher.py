@@ -1,4 +1,6 @@
 import math
+from logging import warning
+import numpy as np
 
 class Hasher:
     def __init__(self):
@@ -14,10 +16,9 @@ class Hasher:
         else:
             return self.known_text[text]
 
-    def text_padding(self, lst, length, filler = 0):
+    def padding(self, lst, length, filler = 0):
         if not len(lst) > length:
-            for i in range(abs(len(lst) - length)):
-                lst.append(filler)
-            return lst
+            return np.pad(lst, (0, length - len(lst)), 'constant', constant_values=filler).tolist()
         else:
+            warning(f"Tried to pad a list that was to lonnnnnnnng: Length of {len(lst)} Item in Question: {lst}")
             return "TOO LONG"
