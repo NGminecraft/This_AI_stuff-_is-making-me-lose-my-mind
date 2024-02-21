@@ -22,3 +22,6 @@ class Hasher:
         else:
             warning(f"Tried to pad a list that was to lonnnnnnnng: Length of {len(lst)} Item in Question: {lst}")
             return "TOO LONG"
+        
+    def get_vocabulary(self):
+        return self.known_text

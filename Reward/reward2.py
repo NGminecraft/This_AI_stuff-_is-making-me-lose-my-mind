@@ -38,6 +38,7 @@ class Reward:
         self.logger = logger
         self.tokenizer = str_obj.hash_text
         self.padding = str_obj.padding
+        self.vocab = str_obj.get_vocabulary
         self.model, built = init_model()
         self.init_train_data()
         self.init_train_test()
@@ -49,18 +50,16 @@ class Reward:
 
     def init_train_test(self):
         self.data_test = load_data("Reward/Data/TrainingData/data_test.csv")
-    
-    def build_model(self):
+        
+    def _model_build(self, vocab_size=100000):
         word_input = keras.layers.Input(shape=(1,), name="Word_Input")
         prev_word_input = keras.layers.Input(shape=(1,), name='prev_word_input')
         additional_input = keras.layers.Input(shape=(1,), name='additional_input')
         
-        vocabulary_size = 12940
-        embedding_dim = 200
-        word_embedding = keras.layers.Embedding(input_dim=vocabulary_size, output_dim=embedding_dim)(word_input)
+        word_embedding = keras.layers.Dense(200)(word_input)
         
         lstm_units = 150
-        lstm_layer = keras.layers.LSTM(units=lstm_units)(word_embedding)
+        lstm_layer = keras.layers.LSTM(units=150, input_shape=(None, 1500))(word_input)
         
         concatenated = keras.layers.Concatenate()([lstm_layer, prev_word_input, additional_input])
         
@@ -72,7 +71,11 @@ class Reward:
         
         model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
         
+        self.logger.log(logging.INFO, 'model created')
         model.summary()
+        return model
+    
+    def build_model(self):
 
         if os.path.exists("Reward/Data/TrainingData/InputsandOutputs/inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/outputs.npy"):
             self.logger.log(logging.INFO, "Loading data from the npy files")
@@ -89,6 +92,19 @@ class Reward:
             input_length = 1500
             train_data = pd.read_csv("Reward/Data/TrainingData/data_train.csv")
             test_data = pd.read_csv("Reward/Data/TrainingData/data_test.csv")
+            
+            words_to_numbers = {
+                "neutral": 0,
+                "sadness": -1,
+                "fear": -1,
+                "anger": -1,
+                "joy": 1
+            }
+            for i, v in enumerate(train_data["Emotion"]):
+                train_data.at[i, "Emotion"] = words_to_numbers[v]
+            for i, v in enumerate(test_data["Emotion"]):
+                test_data.at[i, "Emotion"] = words_to_numbers[v]
+                
             input_indices = np.array([0]*input_length)
             for i in tqdm(train_data["Text"], desc="Creating The Input Matrix"):
                 try:
@@ -99,7 +115,7 @@ class Reward:
             np.save("Reward/Data/TrainingData/InputsandOutputs/inputs", input_indices, allow_pickle=True)
             output_indices = np.array([[0]])
             for i in tqdm(train_data["Emotion"], desc="Creating The Output Matrix"):
-                output_indices = np.vstack(i)
+                output_indices = np.vstack((output_indices, [i]))
             np.save("Reward/Data/TrainingData/InputsandOutputs/outputs", output_indices, allow_pickle=True)
 
 
@@ -115,8 +131,15 @@ class Reward:
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_inputs", validation_input_indices, allow_pickle=True)
             validation_output_indices = np.array([[0]])
             for i in tqdm(train_data["Emotion"], desc="Creating The Validation Output Matrix"):
-                validation_output_indices = np.vstack(i)
+                validation_output_indices = np.vstack((validation_output_indices, np.asarray([i])))
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_outputs", validation_output_indices,
                     allow_pickle=True)
+            
+        thingy = np.asarray([0]*input_indices.shape[0])
+        
+        self.logger.log(logging.INFO, f'Input loaded with shape {input_indices.shape} and looks like {input_indices}')
+        self.logger.log(logging.INFO, f'Output loaded with shape {output_indices.shape} and looks like {output_indices}')
+        
+        model = self._model_build(len(self.vocab().keys()))
 
-        model.fit(x=[input_indices, 1, 1], y=output_indices, validation_data=(validation_input_indices, validation_output_indices))
+        model.fit(x=[input_indices, thingy, thingy], y=output_indices, validation_data=(validation_input_indices, validation_output_indices))
