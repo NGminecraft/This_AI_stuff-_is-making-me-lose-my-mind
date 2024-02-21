@@ -34,7 +34,8 @@ def load_data(file):
 
 
 class Reward:
-    def __init__(self, str_obj):
+    def __init__(self, str_obj, logger):
+        self.logger = logger
         self.tokenizer = str_obj.hash_text
         self.padding = str_obj.padding
         self.model, built = init_model()
@@ -74,17 +75,17 @@ class Reward:
         model.summary()
 
         if os.path.exists("Reward/Data/TrainingData/InputsandOutputs/inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/outputs.npy"):
-            logging.log(logging.INFO, "Loading data from the npy files")
+            self.logger.log(logging.INFO, "Loading data from the npy files")
             input_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/inputs.npy")
-            logging.log(logging.INFO, f"Loaded input matrix of shape {input_indices.shape}")
+            self.logger.log(logging.INFO, f"Loaded input matrix of shape {input_indices.shape}")
             output_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/outputs.npy")
-            logging.log(logging.INFO, f"Loaded output matrix of shape {output_indices.shape}")
+            self.logger.log(logging.INFO, f"Loaded output matrix of shape {output_indices.shape}")
             validation_input_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/validation_inputs.npy")
-            logging.log(logging.INFO, f"Loaded validation input matrix of shape {validation_input_indices.shape}")
+            self.logger.log(logging.INFO, f"Loaded validation input matrix of shape {validation_input_indices.shape}")
             validation_output_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy")
-            logging.log(logging.INFO, f"Loaded validation output matrix of shape {validation_output_indices.shape}")
+            self.logger.log(logging.INFO, f"Loaded validation output matrix of shape {validation_output_indices.shape}")
         else:
-            logging.log(logging.INFO, "No data found, generating training data")
+            self.logger.log(logging.INFO, "No data found, generating training data")
             input_length = 1500
             train_data = pd.read_csv("Reward/Data/TrainingData/data_train.csv")
             test_data = pd.read_csv("Reward/Data/TrainingData/data_test.csv")

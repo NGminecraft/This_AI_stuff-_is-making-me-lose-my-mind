@@ -1,0 +1,13 @@
+2024-02-20 20:29:17,920 - logs/MainLogger - INFO - Initializing
+2024-02-20 20:29:17,921 - logs/MainLogger - WARNING - Initializing Warnings
+2024-02-20 20:30:06,471 - MainLogger - INFO - Initializing
+2024-02-20 20:30:06,471 - MainLogger - WARNING - Initializing Warnings
+2024-02-20 20:35:00,942 - MainLogger - INFO - Initializing
+2024-02-20 20:35:00,942 - MainLogger - WARNING - Initializing Warnings
+2024-02-20 20:35:40,142 - MainLogger - INFO - Initializing
+2024-02-20 20:35:40,143 - MainLogger - WARNING - Initializing Warnings
+2024-02-20 20:35:40,983 - MainLogger - INFO - Loading data from the npy files
+2024-02-20 20:35:41,222 - MainLogger - INFO - Loaded input matrix of shape (7934, 1500)
+2024-02-20 20:35:41,225 - MainLogger - INFO - Loaded output matrix of shape (5, 1)
+2024-02-20 20:35:41,327 - MainLogger - INFO - Loaded validation input matrix of shape (3394, 1500)
+2024-02-20 20:35:41,330 - MainLogger - INFO - Loaded validation output matrix of shape (5, 1)
