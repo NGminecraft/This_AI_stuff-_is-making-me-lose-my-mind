@@ -84,6 +84,7 @@ class Reward:
             validation_output_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy")
             logging.log(logging.INFO, f"Loaded validation output matrix of shape {validation_output_indices.shape}")
         else:
+            logging.log(logging.INFO, "No data found, generating training data")
             input_length = 1500
             train_data = pd.read_csv("Reward/Data/TrainingData/data_train.csv")
             test_data = pd.read_csv("Reward/Data/TrainingData/data_test.csv")
