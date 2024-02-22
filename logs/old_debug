@@ -1,11 +1,11 @@
-2024-02-21 16:57:15,641 - MainLogger - INFO - Initializing
-2024-02-21 16:57:15,641 - MainLogger - WARNING - Initializing Warnings
-2024-02-21 16:57:15,799 - MainLogger - INFO - Loading data from the npy files
-2024-02-21 16:57:15,820 - MainLogger - INFO - Loaded input matrix of shape (7934, 1500)
-2024-02-21 16:57:15,821 - MainLogger - INFO - Loaded output matrix of shape (7934, 1)
-2024-02-21 16:57:15,832 - MainLogger - INFO - Loaded validation input matrix of shape (3394, 1500)
-2024-02-21 16:57:15,834 - MainLogger - INFO - Loaded validation output matrix of shape (7934, 1)
-2024-02-21 16:57:15,836 - MainLogger - INFO - Input loaded with shape (7934, 1500) and looks like [[      0.               0.               0.         ...       0.
+2024-02-21 23:55:57,596 - MainLogger - INFO - Initializing
+2024-02-21 23:55:57,597 - MainLogger - WARNING - Initializing Warnings
+2024-02-21 23:55:58,184 - MainLogger - INFO - Loading data from the npy files
+2024-02-21 23:55:58,415 - MainLogger - INFO - Loaded input matrix of shape (7934, 1500)
+2024-02-21 23:55:58,418 - MainLogger - INFO - Loaded output matrix of shape (7934, 1)
+2024-02-21 23:55:58,520 - MainLogger - INFO - Loaded validation input matrix of shape (3394, 1500)
+2024-02-21 23:55:58,523 - MainLogger - INFO - Loaded validation output matrix of shape (3394, 1)
+2024-02-21 23:55:58,524 - MainLogger - INFO - Input loaded with shape (7934, 1500) and looks like [[      0.               0.               0.         ...       0.
         0.               0.        ]
  [ 330778.81332331 1410616.11961622 1945323.53761391 ...       0.
         0.               0.        ]
@@ -18,10 +18,31 @@
         0.               0.        ]
  [ 330778.81332331 1142156.05697142  445213.45671979 ...       0.
         0.               0.        ]]
-2024-02-21 16:57:15,838 - MainLogger - INFO - Output loaded with shape (7934, 1) and looks like [[ 0]
+2024-02-21 23:55:58,524 - MainLogger - INFO - Output loaded with shape (7934, 1) and looks like [[ 0]
  [ 0]
  [-1]
  ...
  [-1]
  [-1]
  [-1]]
+2024-02-21 23:55:58,525 - MainLogger - INFO - Validation Input loaded with shape (3394, 1500) and looks like [[      0.               0.               0.         ...       0.
+        0.               0.        ]
+ [1142156.05697142  330778.81332331 1861470.40292855 ...       0.
+        0.               0.        ]
+ [ 330778.81332331 2382873.05252801 1945323.53761391 ...       0.
+        0.               0.        ]
+ ...
+ [ 330778.81332331 1142156.05697142 2292977.23267122 ...       0.
+        0.               0.        ]
+ [1118709.38231342 1861470.40292855  330778.81332331 ...       0.
+        0.               0.        ]
+ [1487087.79793255 1945323.53761391 1861470.40292855 ...       0.
+        0.               0.        ]]
+2024-02-21 23:55:58,525 - MainLogger - INFO - Validation Output loaded with shape (3394, 1) and looks like [[ 0]
+ [-1]
+ [ 0]
+ ...
+ [ 0]
+ [-1]
+ [-1]]
+2024-02-21 23:55:58,707 - MainLogger - INFO - model created

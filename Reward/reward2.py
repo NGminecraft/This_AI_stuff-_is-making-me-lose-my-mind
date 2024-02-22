@@ -52,14 +52,14 @@ class Reward:
         self.data_test = load_data("Reward/Data/TrainingData/data_test.csv")
         
     def _model_build(self, vocab_size=100000):
-        word_input = keras.layers.Input(shape=(1,), name="Word_Input")
+        word_input = keras.layers.Input(shape=(1500,), name="Word_Input")
         prev_word_input = keras.layers.Input(shape=(1,), name='prev_word_input')
         additional_input = keras.layers.Input(shape=(1,), name='additional_input')
-        
-        word_embedding = keras.layers.Dense(200)(word_input)
+
+        reshaped_input = keras.layers.Reshape((1, 1500))(word_input)
         
         lstm_units = 150
-        lstm_layer = keras.layers.LSTM(units=150, input_shape=(None, 1500))(word_input)
+        lstm_layer = keras.layers.LSTM(units=150, input_shape=(None, 1), activation='relu')(reshaped_input)
         
         concatenated = keras.layers.Concatenate()([lstm_layer, prev_word_input, additional_input])
         
@@ -130,7 +130,7 @@ class Reward:
                     print(len(self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_inputs", validation_input_indices, allow_pickle=True)
             validation_output_indices = np.array([[0]])
-            for i in tqdm(train_data["Emotion"], desc="Creating The Validation Output Matrix"):
+            for i in tqdm(test_data["Emotion"], desc="Creating The Validation Output Matrix"):
                 validation_output_indices = np.vstack((validation_output_indices, np.asarray([i])))
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_outputs", validation_output_indices,
                     allow_pickle=True)
@@ -139,7 +139,9 @@ class Reward:
         
         self.logger.log(logging.INFO, f'Input loaded with shape {input_indices.shape} and looks like {input_indices}')
         self.logger.log(logging.INFO, f'Output loaded with shape {output_indices.shape} and looks like {output_indices}')
+        self.logger.log(logging.INFO, f'Validation Input loaded with shape {validation_input_indices.shape} and looks like {validation_input_indices}')
+        self.logger.log(logging.INFO, f'Validation Output loaded with shape {validation_output_indices.shape} and looks like {validation_output_indices}')
         
         model = self._model_build(len(self.vocab().keys()))
 
-        model.fit(x=[input_indices, thingy, thingy], y=output_indices, validation_data=(validation_input_indices, validation_output_indices))
+        model.fit(x=[input_indices, thingy, thingy], y=output_indices, batch_size=10, epochs=20, validation_data=([validation_input_indices, np.asarray([0]*validation_input_indices.shape[0]), np.asarray([0]*validation_input_indices.shape[0])], validation_output_indices))
