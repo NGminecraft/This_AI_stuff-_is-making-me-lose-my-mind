@@ -7,6 +7,8 @@ import numpy as np
 from tqdm import tqdm
 import logging
 import copy
+import sys
+
 def format(word):
     pass
 
@@ -45,7 +47,7 @@ class Reward:
             self.padding = str_obj.padding
             self.vocab = str_obj.get_vocabulary
         else:
-            self._tokenizer = keras.preprocessing.text.Tokenizer(num_words=100000, oov_token=-1)
+            self._tokenizer = keras.preprocessing.text.Tokenizer(num_words=100000, oov_token=-1, split=' ')
             b = copy.deepcopy(self.data_train)["Text"].to_list()
             b.extend(self.data_test["Text"].to_list())
             self._tokenizer.fit_on_texts(b)
@@ -98,9 +100,7 @@ class Reward:
             self.logger.log(logging.INFO, f"Loaded validation output matrix of shape {validation_output_indices.shape}")
         else:
             self.logger.log(logging.INFO, "No data found, generating training data")
-            input_length = 500
-            train_data = pd.read_csv("Reward/Data/TrainingData/data_train.csv")
-            test_data = pd.read_csv("Reward/Data/TrainingData/data_test.csv")
+            input_length = 300
 
             words_to_numbers = {
                 "neutral": 0,
@@ -109,30 +109,31 @@ class Reward:
                 "anger": -3,
                 "joy": 1
             }
-            for i, v in enumerate(train_data["Emotion"]):
-                train_data.at[i, "Emotion"] = words_to_numbers[v]
-            for i, v in enumerate(test_data["Emotion"]):
-                test_data.at[i, "Emotion"] = words_to_numbers[v]
+            for i, v in enumerate(self.data_train["Emotion"]):
+                self.data_train.at[i, "Emotion"] = words_to_numbers[v]
+            for i, v in enumerate(self.data_test["Emotion"]):
+                self.data_test.at[i, "Emotion"] = words_to_numbers[v]
                 
             input_indices = np.array([0]*input_length)
-            for i in tqdm(train_data["Text"], desc="Creating The Input Matrix"):
+            for i in tqdm(self.data_train["Text"], desc="Creating The Input Matrix"):
+                if sys.getsizeof(input_indices) >= 1000000000:
+                    self.logger.log(logging.WARNING, f'Input matrix is larger then 1 GB. Size = {sys.getsizeof(input_indices)}')
 #                self.logger.log(logging.DEBUG,self.logger.log(logging.DEBUG, f"{len(self.tokenizer(i))} {self.tokenizer(i)}"))
                 input_indices = np.vstack((input_indices, self.padding(self.tokenizer(i), maxlen=input_length, padding='post', truncating='post')))
             self.logger.log(logging.DEBUG, self._tokenizer.num_words)
             np.save("Reward/Data/TrainingData/InputsandOutputs/inputs", input_indices, allow_pickle=True)
             output_indices = np.array([[0]])
-            for i in tqdm(train_data["Emotion"], desc="Creating The Output Matrix"):
+            for i in tqdm(self.data_train["Emotion"], desc="Creating The Output Matrix"):
                 output_indices = np.vstack((output_indices, [i]))
             np.save("Reward/Data/TrainingData/InputsandOutputs/outputs", output_indices, allow_pickle=True)
 
 
-
             validation_input_indices = np.array([0]*input_length)
-            for i in tqdm(test_data["Text"], desc="Creating The Validation Input Matrix"):
+            for i in tqdm(self.data_test["Text"], desc="Creating The Validation Input Matrix"):
                 validation_input_indices = np.vstack((validation_input_indices, self.padding(self.tokenizer(i), maxlen=input_length, padding='post', truncating='post')))
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_inputs", validation_input_indices, allow_pickle=True)
             validation_output_indices = np.array([[0]])
-            for i in tqdm(test_data["Emotion"], desc="Creating The Validation Output Matrix"):
+            for i in tqdm(self.data_test["Emotion"], desc="Creating The Validation Output Matrix"):
                 validation_output_indices = np.vstack((validation_output_indices, np.asarray([i])))
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_outputs", validation_output_indices,
                     allow_pickle=True)
