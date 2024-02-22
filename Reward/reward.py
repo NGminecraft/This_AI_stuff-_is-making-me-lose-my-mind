@@ -136,6 +136,7 @@ class Reward:
                     allow_pickle=True)
             validation_output_indices = np.array([[0]])
             for i in tqdm(test_data["Emotion"], desc="Creating The Validation Output Matrix"):
+                self.logger.log(logging.DEBUG, i)
                 validation_output_indices = np.vstack((validation_output_indices, np.asarray([i])))
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_outputs", validation_output_indices,
                     allow_pickle=True)

@@ -1,10 +1,12 @@
 import keras
 import pandas as pd
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import numpy as np
 from tqdm import tqdm
 import logging
+import copy
 def format(word):
     pass
 
@@ -24,8 +26,8 @@ def load_data(file):
     words_to_numbers = {
         "neutral": 0,
         "sadness": -1,
-        "fear": -1,
-        "anger": -1,
+        "fear": -2,
+        "anger": -3,
         "joy": 1
     }
     for i, v in enumerate(data["Emotion"]):
@@ -34,42 +36,49 @@ def load_data(file):
 
 
 class Reward:
-    def __init__(self, str_obj, logger):
+    def __init__(self, logger=None, str_obj=None):
         self.logger = logger
-        self.tokenizer = str_obj.hash_text
-        self.padding = str_obj.padding
-        self.vocab = str_obj.get_vocabulary
-        self.model, built = init_model()
         self.init_train_data()
         self.init_train_test()
+        if str_obj is not None:
+            self.tokenizer = str_obj.hash_text
+            self.padding = str_obj.padding
+            self.vocab = str_obj.get_vocabulary
+        else:
+            self._tokenizer = keras.preprocessing.text.Tokenizer()
+            b = copy.deepcopy(self.data_train)["Text"].to_list()
+            b.extend(self.data_test["Text"].to_list())
+            self._tokenizer.fit_on_texts(b)
+            self.tokenizer = self._tokenizer.texts_to_sequences
+            self.padding = keras.preprocessing.sequence.pad_sequences
+        self.model, built = init_model()
         if not built:
             self.build_model()
     
     def init_train_data(self):
-        self.data_train = load_data("Reward/Data/TrainingData/data_train.csv")
+        self.data_train = load_csv("Reward/Data/TrainingData/data_train.csv")
 
     def init_train_test(self):
-        self.data_test = load_data("Reward/Data/TrainingData/data_test.csv")
+        self.data_test = load_csv("Reward/Data/TrainingData/data_test.csv")
         
-    def _model_build(self, vocab_size=100000):
+    def _model_build(self):
         word_input = keras.layers.Input(shape=(1500,), name="Word_Input")
         prev_word_input = keras.layers.Input(shape=(1,), name='prev_word_input')
         additional_input = keras.layers.Input(shape=(1,), name='additional_input')
 
         reshaped_input = keras.layers.Reshape((1, 1500))(word_input)
-        
-        lstm_units = 150
-        lstm_layer = keras.layers.LSTM(units=150, input_shape=(None, 1), activation='relu')(reshaped_input)
+
+        lstm_layer = keras.layers.LSTM(units=1024, input_shape=(None, 1), activation='relu')(reshaped_input)
         
         concatenated = keras.layers.Concatenate()([lstm_layer, prev_word_input, additional_input])
         
-        dense_layer_1 = keras.layers.Dense(units=128, activation='relu')(concatenated)
-        dense_layer_2 = keras.layers.Dense(units=64, activation='relu')(dense_layer_1)
+        dense_layer_1 = keras.layers.Dense(units=512, activation='linear')(concatenated)
+        dense_layer_2 = keras.layers.Dense(units=64, activation='linear')(dense_layer_1)
         output = keras.layers.Dense(units=1, activation='tanh', name='output')(dense_layer_2)
         
         model = keras.Model(inputs=[word_input, prev_word_input, additional_input], outputs=output)
         
-        model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
+        model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.008), loss='mse', metrics=['mean_squared_error'])
         
         self.logger.log(logging.INFO, 'model created')
         model.summary()
@@ -92,12 +101,12 @@ class Reward:
             input_length = 1500
             train_data = pd.read_csv("Reward/Data/TrainingData/data_train.csv")
             test_data = pd.read_csv("Reward/Data/TrainingData/data_test.csv")
-            
+
             words_to_numbers = {
                 "neutral": 0,
                 "sadness": -1,
-                "fear": -1,
-                "anger": -1,
+                "fear": -2,
+                "anger": -3,
                 "joy": 1
             }
             for i, v in enumerate(train_data["Emotion"]):
@@ -107,11 +116,7 @@ class Reward:
                 
             input_indices = np.array([0]*input_length)
             for i in tqdm(train_data["Text"], desc="Creating The Input Matrix"):
-                try:
-                    input_indices = np.vstack((input_indices, self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
-                except ValueError:
-                    print(self.padding(list(self.tokenizer(j) for j in i), input_length, 0))
-                    print(len(self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
+                input_indices = np.vstack((input_indices, self.padding(self.tokenizer(i), maxlen=1500, padding='post', truncating='post')))
             np.save("Reward/Data/TrainingData/InputsandOutputs/inputs", input_indices, allow_pickle=True)
             output_indices = np.array([[0]])
             for i in tqdm(train_data["Emotion"], desc="Creating The Output Matrix"):
@@ -123,11 +128,7 @@ class Reward:
             input_length = 1500
             validation_input_indices = np.array([0]*input_length)
             for i in tqdm(test_data["Text"], desc="Creating The Validation Input Matrix"):
-                try:
-                    validation_input_indices = np.vstack((validation_input_indices, self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
-                except ValueError:
-                    print(self.padding(list(self.tokenizer(j) for j in i), input_length, 0))
-                    print(len(self.padding(list(self.tokenizer(j) for j in i), input_length, 0)))
+                validation_input_indices = np.vstack((validation_input_indices, self.padding(self.tokenizer(i), maxlen=1500, padding='post', truncating='post')))
             np.save("Reward/Data/TrainingData/InputsandOutputs/validation_inputs", validation_input_indices, allow_pickle=True)
             validation_output_indices = np.array([[0]])
             for i in tqdm(test_data["Emotion"], desc="Creating The Validation Output Matrix"):
@@ -142,6 +143,6 @@ class Reward:
         self.logger.log(logging.INFO, f'Validation Input loaded with shape {validation_input_indices.shape} and looks like {validation_input_indices}')
         self.logger.log(logging.INFO, f'Validation Output loaded with shape {validation_output_indices.shape} and looks like {validation_output_indices}')
         
-        model = self._model_build(len(self.vocab().keys()))
+        model = self._model_build()
 
         model.fit(x=[input_indices, thingy, thingy], y=output_indices, batch_size=10, epochs=20, validation_data=([validation_input_indices, np.asarray([0]*validation_input_indices.shape[0]), np.asarray([0]*validation_input_indices.shape[0])], validation_output_indices))

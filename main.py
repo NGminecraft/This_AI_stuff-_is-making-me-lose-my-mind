@@ -59,4 +59,4 @@ logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
 
 text = Hasher()
-a = Reward(text, logger=logger)
+a = Reward(logger=logger)
