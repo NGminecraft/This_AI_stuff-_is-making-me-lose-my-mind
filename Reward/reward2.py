@@ -145,32 +145,35 @@ class Reward:
         self.logger.log(logging.INFO, f'Validation Input loaded with shape {validation_input_indices.shape} and looks like {validation_input_indices}')
         self.logger.log(logging.INFO, f'Validation Output loaded with shape {validation_output_indices.shape} and looks like {validation_output_indices}')
 
-        optimizers = [keras.optimizers.SGD(), keras.optimizers.RMSprop(), keras.optimizers.Adadelta(), keras.optimizers.Adagrad(), keras.optimizers.Adam(), keras.optimizers.Adamax(), keras.optimizers.AdamW()]
-
+        all_histories = []
         lowest_loss = 150
         best_optimizer = None
         best_history = None
-        all_histories = []
-        for i in optimizers:
+        num = 0
+        learning_rates = []
+        while num < 1:
+            num += 0.0000001
+            learning_rates.append(num)
+        for i in learning_rates:
             all_histories.append([i])
-            model = self._model_build(opt = i)
-            history = model.fit(x=[input_indices, thingy], y=output_indices, batch_size=10, epochs=20, validation_data=([validation_input_indices, np.asarray([1]*validation_input_indices.shape[0])], validation_output_indices))
+            model = self._model_build(opt = keras.optimizers.Adagrad(num))
+            history = model.fit(x=[input_indices, thingy], y=output_indices, batch_size=10, epochs=1, validation_data=([validation_input_indices, np.asarray([1]*validation_input_indices.shape[0])], validation_output_indices))
             all_histories[-1].append(history)
             self.logger.log(logging.INFO, f'Trained model with optimizer: {i}')
             self.logger.log(logging.INFO, history)
             if history.history['val_loss'][-1] < lowest_loss:
                 lowest_loss = history.history['val_loss'][-1]
-                best_optimizer = None
+                best_optimizer = i
                 best_history = history
                 self.logger.log(logging.INFO, f'{i} is the new best optimizer')
-        x = np.arange(0, 20)
+        x = (0, 1)
         for i in all_histories:
             history = i[1]
-            plt.plot(x, history.history['loss'], label=f"Loss of {i[0].name}")
-            plt.plot(x, history.history['val_loss'], label=f"Validation loss of {i[0].name}")
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.title('Model Comparison')
+            plt.plot(i[0], history.history['val_loss'], label=f"{i[0]}")
+        plt.xlabel('Learning Rate')
+        plt.ylabel('Validation Loss')
         plt.legend()
+        plt.title('Learning rates and accuracy')
+        plt.savefig('LearningRate.png')
         plt.show()
-        plt.savefig('ModelComparison.png')
+            
