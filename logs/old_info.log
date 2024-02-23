@@ -1,3 +1,61 @@
-2024-02-22 15:14:23,900 - MainLogger - INFO - Initializing
-2024-02-22 15:14:23,900 - MainLogger - WARNING - Initializing Warnings
-2024-02-22 15:14:24,166 - MainLogger - INFO - No data found, generating training data
+2024-02-22 21:57:04,822 - MainLogger - INFO - Initializing
+2024-02-22 21:57:04,822 - MainLogger - WARNING - Initializing Warnings
+2024-02-22 21:57:04,955 - MainLogger - INFO - Loading data from the npy files
+2024-02-22 21:57:05,005 - MainLogger - INFO - Loaded input matrix of shape (7934, 300)
+2024-02-22 21:57:05,008 - MainLogger - INFO - Loaded output matrix of shape (7934, 1)
+2024-02-22 21:57:05,031 - MainLogger - INFO - Loaded validation input matrix of shape (3394, 300)
+2024-02-22 21:57:05,034 - MainLogger - INFO - Loaded validation output matrix of shape (3394, 1)
+2024-02-22 21:57:05,034 - MainLogger - INFO - Input loaded with shape (7934, 300) and looks like [[   0    0    0 ...    0    0    0]
+ [  56   49 6041 ...    0    0    0]
+ [ 421    3  320 ...    0    0    0]
+ ...
+ [  55 1137   27 ...    0    0    0]
+ [   8   41   15 ...    0    0    0]
+ [ 279 3521    4 ...    0    0    0]]
+2024-02-22 21:57:05,036 - MainLogger - INFO - Output loaded with shape (7934, 1) and looks like [[ 0]
+ [ 0]
+ [-1]
+ ...
+ [-1]
+ [-2]
+ [-3]]
+2024-02-22 21:57:05,036 - MainLogger - INFO - Validation Input loaded with shape (3394, 300) and looks like [[  0   0   0 ...   0   0   0]
+ [  2 715  30 ...   0   0   0]
+ [ 11   2  75 ...   0   0   0]
+ ...
+ [ 14 192  23 ...   0   0   0]
+ [ 21  32  85 ...   0   0   0]
+ [ 11 588 106 ...   0   0   0]]
+2024-02-22 21:57:05,037 - MainLogger - INFO - Validation Output loaded with shape (3394, 1) and looks like [[ 0]
+ [-1]
+ [ 0]
+ ...
+ [ 0]
+ [-1]
+ [-3]]
+2024-02-22 21:57:05,222 - MainLogger - INFO - model created
+2024-02-22 21:58:50,843 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.sgd.SGD object at 0x7f7ca6fb7460>
+2024-02-22 21:58:50,844 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7c901d0f70>
+2024-02-22 21:58:50,844 - MainLogger - INFO - <keras.src.optimizers.sgd.SGD object at 0x7f7ca6fb7460> is the new best optimizer
+2024-02-22 21:58:50,916 - MainLogger - INFO - model created
+2024-02-22 22:00:36,911 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.rmsprop.RMSprop object at 0x7f7ca6fb7b80>
+2024-02-22 22:00:36,911 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7c1c35fc70>
+2024-02-22 22:00:36,983 - MainLogger - INFO - model created
+2024-02-22 22:02:26,585 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adadelta.Adadelta object at 0x7f7ca4130070>
+2024-02-22 22:02:26,585 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7bf85ddba0>
+2024-02-22 22:02:26,658 - MainLogger - INFO - model created
+2024-02-22 22:04:07,952 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adagrad.Adagrad object at 0x7f7ca4130340>
+2024-02-22 22:04:07,953 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7bf827b670>
+2024-02-22 22:04:07,953 - MainLogger - INFO - <keras.src.optimizers.adagrad.Adagrad object at 0x7f7ca4130340> is the new best optimizer
+2024-02-22 22:04:08,029 - MainLogger - INFO - model created
+2024-02-22 22:05:58,486 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adam.Adam object at 0x7f7ca4130610>
+2024-02-22 22:05:58,486 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7be855b1c0>
+2024-02-22 22:05:58,560 - MainLogger - INFO - model created
+2024-02-22 22:07:46,721 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adamax.Adamax object at 0x7f7ca41308e0>
+2024-02-22 22:07:46,721 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7be81fb580>
+2024-02-22 22:07:46,796 - MainLogger - INFO - model created
+2024-02-22 22:09:45,736 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adamw.AdamW object at 0x7f7ca4130bb0>
+2024-02-22 22:09:45,736 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7bd0ebd2d0>
+2024-02-22 22:09:45,812 - MainLogger - INFO - model created
+2024-02-22 22:11:32,676 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adamax.Adamax object at 0x7f7ca4130e80>
+2024-02-22 22:11:32,677 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f7bd0a55d50>
