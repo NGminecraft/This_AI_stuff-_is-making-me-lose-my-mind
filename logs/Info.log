@@ -1,59 +1,38 @@
-2024-02-22 22:13:35,984 - MainLogger - INFO - Initializing
-2024-02-22 22:13:35,985 - MainLogger - WARNING - Initializing Warnings
-2024-02-22 22:13:36,117 - MainLogger - INFO - Loading data from the npy files
-2024-02-22 22:13:36,166 - MainLogger - INFO - Loaded input matrix of shape (7934, 300)
-2024-02-22 22:13:36,169 - MainLogger - INFO - Loaded output matrix of shape (7934, 1)
-2024-02-22 22:13:36,191 - MainLogger - INFO - Loaded validation input matrix of shape (3394, 300)
-2024-02-22 22:13:36,194 - MainLogger - INFO - Loaded validation output matrix of shape (3394, 1)
-2024-02-22 22:13:36,195 - MainLogger - INFO - Input loaded with shape (7934, 300) and looks like [[   0    0    0 ...    0    0    0]
+2024-02-23 17:39:59,755 - MainLogger - INFO - Initializing
+2024-02-23 17:39:59,755 - MainLogger - WARNING - Initializing Warnings
+2024-02-23 17:39:59,947 - MainLogger - INFO - Loading data from the npy files
+2024-02-23 17:39:59,952 - MainLogger - INFO - Loaded input matrix of shape (7934, 300)
+2024-02-23 17:39:59,952 - MainLogger - INFO - Loaded output matrix of shape (7934, 1)
+2024-02-23 17:39:59,955 - MainLogger - INFO - Loaded validation input matrix of shape (3394, 300)
+2024-02-23 17:39:59,955 - MainLogger - INFO - Loaded validation output matrix of shape (3394, 1)
+2024-02-23 17:39:59,956 - MainLogger - INFO - Input loaded with shape (7934, 300) and looks like [[   0    0    0 ...    0    0    0]
  [  56   49 6041 ...    0    0    0]
  [ 421    3  320 ...    0    0    0]
  ...
  [  55 1137   27 ...    0    0    0]
  [   8   41   15 ...    0    0    0]
  [ 279 3521    4 ...    0    0    0]]
-2024-02-22 22:13:36,196 - MainLogger - INFO - Output loaded with shape (7934, 1) and looks like [[ 0]
+2024-02-23 17:39:59,956 - MainLogger - INFO - Output loaded with shape (7934, 1) and looks like [[ 0]
  [ 0]
  [-1]
  ...
  [-1]
  [-2]
  [-3]]
-2024-02-22 22:13:36,197 - MainLogger - INFO - Validation Input loaded with shape (3394, 300) and looks like [[  0   0   0 ...   0   0   0]
+2024-02-23 17:39:59,957 - MainLogger - INFO - Validation Input loaded with shape (3394, 300) and looks like [[  0   0   0 ...   0   0   0]
  [  2 715  30 ...   0   0   0]
  [ 11   2  75 ...   0   0   0]
  ...
  [ 14 192  23 ...   0   0   0]
  [ 21  32  85 ...   0   0   0]
  [ 11 588 106 ...   0   0   0]]
-2024-02-22 22:13:36,197 - MainLogger - INFO - Validation Output loaded with shape (3394, 1) and looks like [[ 0]
+2024-02-23 17:39:59,957 - MainLogger - INFO - Validation Output loaded with shape (3394, 1) and looks like [[ 0]
  [-1]
  [ 0]
  ...
  [ 0]
  [-1]
  [-3]]
-2024-02-22 22:13:36,381 - MainLogger - INFO - model created
-2024-02-22 22:15:33,713 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.sgd.SGD object at 0x7f9566482d40>
-2024-02-22 22:15:33,714 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f95501e3730>
-2024-02-22 22:15:33,714 - MainLogger - INFO - <keras.src.optimizers.sgd.SGD object at 0x7f9566482d40> is the new best optimizer
-2024-02-22 22:15:33,793 - MainLogger - INFO - model created
-2024-02-22 22:17:33,094 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.rmsprop.RMSprop object at 0x7f9566483a30>
-2024-02-22 22:17:33,094 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f94c0306470>
-2024-02-22 22:17:33,095 - MainLogger - INFO - <keras.src.optimizers.rmsprop.RMSprop object at 0x7f9566483a30> is the new best optimizer
-2024-02-22 22:17:33,177 - MainLogger - INFO - model created
-2024-02-22 22:19:21,056 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adadelta.Adadelta object at 0x7f95664835b0>
-2024-02-22 22:19:21,056 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f94b4777190>
-2024-02-22 22:19:21,128 - MainLogger - INFO - model created
-2024-02-22 22:21:06,713 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adagrad.Adagrad object at 0x7f9566483c10>
-2024-02-22 22:21:06,714 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f94b430aad0>
-2024-02-22 22:21:06,714 - MainLogger - INFO - <keras.src.optimizers.adagrad.Adagrad object at 0x7f9566483c10> is the new best optimizer
-2024-02-22 22:21:06,787 - MainLogger - INFO - model created
-2024-02-22 22:22:57,794 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adam.Adam object at 0x7f9566483eb0>
-2024-02-22 22:22:57,794 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f9498723340>
-2024-02-22 22:22:57,867 - MainLogger - INFO - model created
-2024-02-22 22:24:45,798 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adamax.Adamax object at 0x7f955cdc01c0>
-2024-02-22 22:24:45,799 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f94985972b0>
-2024-02-22 22:24:45,870 - MainLogger - INFO - model created
-2024-02-22 22:26:52,284 - MainLogger - INFO - Trained model with optimizer: <keras.src.optimizers.adamw.AdamW object at 0x7f955cdc0490>
-2024-02-22 22:26:52,284 - MainLogger - INFO - <keras.src.callbacks.History object at 0x7f9498161cc0>
+2024-02-23 17:40:00,287 - MainLogger - INFO - New learning rate of 9.694049318336484e-05
+2024-02-23 17:40:00,531 - MainLogger - INFO - model created
+2024-02-23 17:40:00,531 - MainLogger - INFO - Trained with 9.694049318336484e-05 learning rate

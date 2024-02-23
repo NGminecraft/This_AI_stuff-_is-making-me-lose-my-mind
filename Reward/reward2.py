@@ -9,6 +9,7 @@ import logging
 import copy
 import sys
 import matplotlib.pyplot as plt
+from random import uniform
 
 def format(word):
     pass
@@ -64,26 +65,32 @@ class Reward:
     def init_train_test(self):
         self.data_test = load_csv("Reward/Data/TrainingData/data_test.csv")
         
-    def _model_build(self, opt=keras.optimizers.Adam()):
+    def _model_build(self, opt=keras.optimizers.Adam(), sum=False):
         word_input = keras.layers.Input(shape=(300,), name="Word_Input")
         additional_input = keras.layers.Input(shape=(1,), name='additional_input')
 
         reshaped_input = keras.layers.Reshape((1, 300))(word_input)
+        
+        dropout = keras.layers.Dropout(1/3)(reshaped_input)
 
-        lstm_layer = keras.layers.LSTM(units=250, input_shape=(None, 1), activation='relu')(reshaped_input)
+        lstm_layer = keras.layers.LSTM(units=250, input_shape=(None, 1), activation='relu')(dropout)
         
         concatenated = keras.layers.Concatenate()([lstm_layer, additional_input])
         
-        dense_layer_1 = keras.layers.Dense(units=200, activation='linear')(concatenated)
-        dense_layer_2 = keras.layers.Dense(units=100, activation='linear')(dense_layer_1)
-        output = keras.layers.Dense(units=1, activation='tanh', name='output')(dense_layer_2)
+        dense_layer_1 = keras.layers.Dense(units=200, activation='relu')(concatenated)
+        dense_layer_2 = keras.layers.Dense(units=100, activation='relu')(dense_layer_1)
+        dense_layer_3 = keras.layers.Dense(units=80, activation='relu')(dense_layer_2)
+        dense_layer_4 = keras.layers.Dense(units=70, activation='relu')(dense_layer_3)
+        dense_layer_7 = keras.layers.Dense(units=10, activation='relu')(dense_layer_4)
+        output = keras.layers.Dense(units=1, activation='tanh', name='output')(dense_layer_7)
         
         model = keras.Model(inputs=[word_input, additional_input], outputs=output)
         
         model.compile(optimizer=opt, loss='mse', metrics=['mean_squared_error'])
         
         self.logger.log(logging.INFO, 'model created')
-        model.summary()
+        if sum:
+            model.summary()
         return model
     
     def build_model(self):
@@ -144,36 +151,17 @@ class Reward:
         self.logger.log(logging.INFO, f'Output loaded with shape {output_indices.shape} and looks like {output_indices}')
         self.logger.log(logging.INFO, f'Validation Input loaded with shape {validation_input_indices.shape} and looks like {validation_input_indices}')
         self.logger.log(logging.INFO, f'Validation Output loaded with shape {validation_output_indices.shape} and looks like {validation_output_indices}')
-
-        all_histories = []
-        lowest_loss = 150
-        best_optimizer = None
-        best_history = None
-        num = 0
-        learning_rates = []
-        while num < 1:
-            num += 0.0000001
-            learning_rates.append(num)
-        for i in learning_rates:
-            all_histories.append([i])
-            model = self._model_build(opt = keras.optimizers.Adagrad(num))
-            history = model.fit(x=[input_indices, thingy], y=output_indices, batch_size=10, epochs=1, validation_data=([validation_input_indices, np.asarray([1]*validation_input_indices.shape[0])], validation_output_indices))
-            all_histories[-1].append(history)
-            self.logger.log(logging.INFO, f'Trained model with optimizer: {i}')
-            self.logger.log(logging.INFO, history)
-            if history.history['val_loss'][-1] < lowest_loss:
-                lowest_loss = history.history['val_loss'][-1]
-                best_optimizer = i
-                best_history = history
-                self.logger.log(logging.INFO, f'{i} is the new best optimizer')
-        x = (0, 1)
-        for i in all_histories:
-            history = i[1]
-            plt.plot(i[0], history.history['val_loss'], label=f"{i[0]}")
-        plt.xlabel('Learning Rate')
-        plt.ylabel('Validation Loss')
-        plt.legend()
-        plt.title('Learning rates and accuracy')
-        plt.savefig('LearningRate.png')
-        plt.show()
-            
+        
+        c = keras.saving.load_model("TRAINED2.keras")
+        num = 0.0001
+        while True:
+            num += uniform(-0.00001, 0.00001)
+            self.logger.log(logging.INFO, f'New learning rate of {num}')
+            model = self._model_build(opt = keras.optimizers.Adagrad(learning_rate=num), sum=False)
+            self.logger.log(logging.INFO, f'Trained with {num} learning rate')
+            history = model.fit(x=[input_indices, thingy], y=output_indices, batch_size=50, epochs=10000, validation_data=([validation_input_indices, np.asarray([1]*validation_input_indices.shape[0])], validation_output_indices), verbose=1)
+            history2 = c.evaluate(x=[input_indices, thingy], y=output_indices)
+            if history.history['val_loss'][-1] < history2[0]:
+                model.save("TRAINED2.keras")
+                c = copy.deepcopy(model)
+                self.logger.log(logging.INFO, f'New best model with learning rate of {num}')
