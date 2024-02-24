@@ -10,6 +10,8 @@ import copy
 import sys
 import matplotlib.pyplot as plt
 from random import uniform
+import keras_tuner as kt
+import inspect
 
 def format(word):
     pass
@@ -39,11 +41,30 @@ def load_data(file):
     return data
 
 
-class Reward:
-    def __init__(self, logger=None, str_obj=None):
+class Reward():
+    def __init__(self, classes = 5, logger=None, str_obj=None):
+        self.num_classes = classes
         self.logger = logger
         self.init_train_data()
         self.init_train_test()
+        self.learning_rates = [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9]
+        self.optimizer_names = dir(keras.optimizers)
+        self.optimizers = ['Adadelta','Adagrad','Adam','Adamax','Ftrl','Nadam','RMSprop','SGD']
+        self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError',
+                       'MeanAbsoluteLogarithmicError', 'CosineSimilarity', 'Huber',
+                       'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
+                       'SparseCategoricalCrossentropy', 'Hinge', 'SquaredHinge',
+                       'CategoricalHinge', 'Poisson', 'KLDivergence', 'SquaredError']
+        self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
+        self.best_optimizer = None
+        self.tuner = kt.RandomSearch(
+            self._model_build,
+            objective='val_loss',
+            max_trials = 1000,
+            directory = 'Reward/Data/Models',
+            project_name='Reward Model',
+            logger = self.logger
+        )
         if str_obj is not None:
             self.tokenizer = str_obj.hash_text
             self.padding = str_obj.padding
@@ -65,7 +86,7 @@ class Reward:
     def init_train_test(self):
         self.data_test = load_csv("Reward/Data/TrainingData/data_test.csv")
         
-    def _model_build(self, opt=keras.optimizers.Adam(), sum=False):
+    def _model_build(self, hp):
         word_input = keras.layers.Input(shape=(300,), name="Word_Input")
         additional_input = keras.layers.Input(shape=(1,), name='additional_input')
 
@@ -73,26 +94,29 @@ class Reward:
         
         dropout = keras.layers.Dropout(1/3)(reshaped_input)
 
-        lstm_layer = keras.layers.LSTM(units=250, input_shape=(None, 1), activation='relu')(dropout)
+        lstm_layer = keras.layers.LSTM(units=hp.Int('LSTM units', min_value=10, max_value=1000, step=10), input_shape=(None, 1), activation=hp.Choice('LSTM_act', self.activations))(dropout)
         
         concatenated = keras.layers.Concatenate()([lstm_layer, additional_input])
         
-        dense_layer_1 = keras.layers.Dense(units=200, activation='relu')(concatenated)
-        dense_layer_2 = keras.layers.Dense(units=100, activation='relu')(dense_layer_1)
-        dense_layer_3 = keras.layers.Dense(units=80, activation='relu')(dense_layer_2)
-        dense_layer_4 = keras.layers.Dense(units=70, activation='relu')(dense_layer_3)
-        dense_layer_7 = keras.layers.Dense(units=10, activation='relu')(dense_layer_4)
+        dense_layer_1 = keras.layers.Dense(units=hp.Int('dense_unit_1', min_value=10, max_value=1000, step=5),activation=hp.Choice('dense_1', self.activations))(concatenated)
+        dense_layer_2 = keras.layers.Dense(units=hp.Int('dense_unit_2', min_value=10, max_value=1000, step=5),activation=hp.Choice('dense_2', self.activations))(dense_layer_1)
+        dense_layer_3 = keras.layers.Dense(units=hp.Int('dense_unit_3', min_value=10, max_value=1000, step=5), activation=hp.Choice('dense_3', self.activations))(dense_layer_2)
+        dense_layer_4 = keras.layers.Dense(units=hp.Int('dense_unit_4', min_value=10, max_value=1000, step=5), activation=hp.Choice('dense_4', self.activations))(dense_layer_3)
+        dense_layer_7 = keras.layers.Dense(units=hp.Int('dense_unit_7', min_value=10, max_value=1000, step=5), activation=hp.Choice('dense_7', self.activations))(dense_layer_4)
         output = keras.layers.Dense(units=1, activation='tanh', name='output')(dense_layer_7)
+
+        optimizer = hp.Choice('optimizer', self.optimizers)
+        loss = hp.Choice('loss', self.losses)
+        learning_rate = hp.Choice('learning_rate', self.learning_rates)
         
         model = keras.Model(inputs=[word_input, additional_input], outputs=output)
-        
-        model.compile(optimizer=opt, loss='mse', metrics=['mean_squared_error'])
-        
-        self.logger.log(logging.INFO, 'model created')
-        if sum:
-            model.summary()
+
+        if loss == 'Log_Cosh':
+            loss = 'LogCosh'
+        model.compile(optimizer=optimizer, loss=loss, metrics=['mean_squared_error'])
         return model
-    
+
+
     def build_model(self):
 
         if os.path.exists("Reward/Data/TrainingData/InputsandOutputs/inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/outputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/validation_inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy"):
@@ -146,22 +170,14 @@ class Reward:
                     allow_pickle=True)
             
         thingy = np.asarray([1]*input_indices.shape[0])
+        val_thingy = np.asarray([1]*validation_input_indices.shape[0])
         
         self.logger.log(logging.INFO, f'Input loaded with shape {input_indices.shape} and looks like {input_indices}')
         self.logger.log(logging.INFO, f'Output loaded with shape {output_indices.shape} and looks like {output_indices}')
         self.logger.log(logging.INFO, f'Validation Input loaded with shape {validation_input_indices.shape} and looks like {validation_input_indices}')
         self.logger.log(logging.INFO, f'Validation Output loaded with shape {validation_output_indices.shape} and looks like {validation_output_indices}')
-        
-        c = keras.saving.load_model("TRAINED2.keras")
-        num = 0.0001
-        while True:
-            num += uniform(-0.00001, 0.00001)
-            self.logger.log(logging.INFO, f'New learning rate of {num}')
-            model = self._model_build(opt = keras.optimizers.Adagrad(learning_rate=num), sum=False)
-            self.logger.log(logging.INFO, f'Trained with {num} learning rate')
-            history = model.fit(x=[input_indices, thingy], y=output_indices, batch_size=50, epochs=10000, validation_data=([validation_input_indices, np.asarray([1]*validation_input_indices.shape[0])], validation_output_indices), verbose=1)
-            history2 = c.evaluate(x=[input_indices, thingy], y=output_indices)
-            if history.history['val_loss'][-1] < history2[0]:
-                model.save("TRAINED2.keras")
-                c = copy.deepcopy(model)
-                self.logger.log(logging.INFO, f'New best model with learning rate of {num}')
+
+        self.tuner.search(x=[input_indices, thingy], y=output_indices, epochs=100, validation_data=([validation_input_indices, val_thingy], validation_output_indices))
+        best_hps = self.tuner.get_best_models(num_models=3)
+        for i in best_hps:
+            i.save(f'Reward/Data/Models/best_hp-{i}')
