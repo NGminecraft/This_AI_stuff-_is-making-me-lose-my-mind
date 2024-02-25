@@ -52,7 +52,7 @@ class Reward():
         self.optimizers = ['Adadelta','Adagrad','Adam','Adamax','Ftrl','Nadam','RMSprop','SGD']
         self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError', 'Huber',
                        'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
-                       'SparseCategoricalCrossentropy', 'Hinge', 'SquaredHinge',
+                        'Hinge', 'SquaredHinge', 'SparseCategoricalCrossentropy',
                        'CategoricalHinge', 'Poisson', 'KLDivergence', 'SquaredError']
         self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
         self.best_optimizer = None
@@ -63,7 +63,7 @@ class Reward():
             directory = 'Reward/Data/Models',
             project_name='Reward Model',
             logger = self.logger,
-            overwrite=True
+            overwrite=False
         )
         if str_obj is not None:
             self.tokenizer = str_obj.hash_text
