@@ -50,20 +50,20 @@ class Reward():
         self.learning_rates = [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9]
         self.optimizer_names = dir(keras.optimizers)
         self.optimizers = ['Adadelta','Adagrad','Adam','Adamax','Ftrl','Nadam','RMSprop','SGD']
-        self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError',
-                       'MeanAbsoluteLogarithmicError', 'CosineSimilarity', 'Huber',
+        self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError', 'Huber',
                        'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
                        'SparseCategoricalCrossentropy', 'Hinge', 'SquaredHinge',
                        'CategoricalHinge', 'Poisson', 'KLDivergence', 'SquaredError']
         self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
         self.best_optimizer = None
-        self.tuner = kt.RandomSearch(
+        self.tuner = kt.BayesianOptimization(
             self._model_build,
             objective='val_loss',
             max_trials = 1000,
             directory = 'Reward/Data/Models',
             project_name='Reward Model',
-            logger = self.logger
+            logger = self.logger,
+            overwrite=True
         )
         if str_obj is not None:
             self.tokenizer = str_obj.hash_text
