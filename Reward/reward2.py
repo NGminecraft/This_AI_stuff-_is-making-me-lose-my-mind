@@ -52,7 +52,7 @@ class Reward():
         self.optimizers = ['Adadelta','Adagrad','Adam','Adamax','Ftrl','Nadam','RMSprop','SGD']
         self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError', 'Huber',
                        'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
-                        'Hinge', 'SquaredHinge', 'SparseCategoricalCrossentropy',
+                        'Hinge', 'SquaredHinge',
                        'CategoricalHinge', 'Poisson', 'KLDivergence', 'SquaredError']
         self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
         self.best_optimizer = None
