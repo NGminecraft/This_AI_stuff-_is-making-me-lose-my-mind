@@ -35,5 +35,5 @@ class Loader:
             print(b)
 
 if __name__ == '__main__':
-    loader = Loader(directory='Reward/Data/Models/Reward Model')
+    loader = Loader(directory='Reward/Data/Models/Training attempt 2')
     loader.get_models()

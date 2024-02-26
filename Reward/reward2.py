@@ -42,7 +42,7 @@ def load_data(file):
 
 
 class Reward():
-    def __init__(self, classes = 5, logger=None, str_obj=None):
+    def __init__(self, classes = 5, logger=None, str_obj=None, build_model=True):
         self.num_classes = classes
         self.logger = logger
         self.init_train_data()
@@ -53,17 +53,26 @@ class Reward():
         self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError', 'Huber',
                        'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
                         'Hinge', 'SquaredHinge',
-                       'CategoricalHinge', 'Poisson', 'KLDivergence', 'SquaredError']
+                       'CategoricalHinge', 'KLDivergence', 'SquaredError']
         self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
         self.best_optimizer = None
-        self.tuner = kt.BayesianOptimization(
+#        self.tuner = kt.BayesianOptimization(
+#            self._model_build,
+#            objective='val_loss',
+#            max_trials = 1000,
+#            directory = 'Reward/Data/Models',
+#            project_name='Reward Model',
+#            logger = self.logger,
+#            overwrite=False
+#        )
+        self.tuner2 = kt.BayesianOptimization(
             self._model_build,
             objective='val_loss',
             max_trials = 1000,
             directory = 'Reward/Data/Models',
-            project_name='Reward Model',
+            project_name='Training attempt 2',
             logger = self.logger,
-            overwrite=False
+            overwrite=True
         )
         if str_obj is not None:
             self.tokenizer = str_obj.hash_text
@@ -77,7 +86,7 @@ class Reward():
             self.tokenizer = self._tokenizer.texts_to_sequences
             self.padding = keras.preprocessing.sequence.pad_sequences
         self.model, built = init_model()
-        if not built:
+        if not built and build_model:
             self.build_model()
     
     def init_train_data(self):
@@ -177,7 +186,7 @@ class Reward():
         self.logger.log(logging.INFO, f'Validation Input loaded with shape {validation_input_indices.shape} and looks like {validation_input_indices}')
         self.logger.log(logging.INFO, f'Validation Output loaded with shape {validation_output_indices.shape} and looks like {validation_output_indices}')
 
-        self.tuner.search(x=[input_indices, thingy], y=output_indices, epochs=100, validation_data=([validation_input_indices, val_thingy], validation_output_indices))
-        best_hps = self.tuner.get_best_models(num_models=3)
+        self.tuner2.search(x=[input_indices, thingy], y=output_indices, epochs=100, validation_data=([validation_input_indices, val_thingy], validation_output_indices))
+        best_hps = self.tuner2.get_best_models(num_models=3)
         for i in best_hps:
             i.save(f'Reward/Data/Models/best_hp-{i}')

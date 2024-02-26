@@ -1,4 +1,3 @@
-from utils.Hasher.hasher import Hasher
 from Reward.reward2 import Reward
 import logging
 import sys
@@ -58,5 +57,4 @@ logger.addHandler(debug_file_handler)
 logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
 
-text = Hasher()
 a = Reward(logger=logger)
