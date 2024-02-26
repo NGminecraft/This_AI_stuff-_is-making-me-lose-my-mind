@@ -67,10 +67,10 @@ class Reward():
 #        )
         self.tuner2 = kt.BayesianOptimization(
             self._model_build,
-            objective='val_loss',
-            max_trials = 1000,
+            objective='val_mean_squared_error',
+            max_trials = 150,
             directory = 'Reward/Data/Models',
-            project_name='Training attempt 2',
+            project_name='Training attempt mean_squared_error',
             logger = self.logger,
             overwrite=True
         )
