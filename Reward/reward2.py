@@ -13,87 +13,57 @@ from random import uniform
 import keras_tuner as kt
 import inspect
 
-def format(word):
-    pass
-
-def init_model():
-    if os.path.exists('data/reward/models/model.keras'):
-        return keras.saving.load_model('data//reward//models//model.keras'), True
-    else:
-        return keras.Sequential(), False
-
-
-def load_csv(csv):
-    return pd.read_csv(csv)
-
-
-def load_data(file):
-    data = load_csv(file)
-    words_to_numbers = {
-        "neutral": 0,
-        "sadness": -1,
-        "fear": -2,
-        "anger": -3,
-        "joy": 1
-    }
-    for i, v in enumerate(data["Emotion"]):
-        data.at[i, "Emotion"] = words_to_numbers[v]
-    return data
-
 
 class Reward:
-    def __init__(self, classes = 5, logger=None, str_obj=None, build_model=True):
+    def __init__(self, loader, formatter, classes = 5, logger=None, str_obj=None, build_model=True):
         self.num_classes = classes
         self.logger = logger
-        self.init_train_data()
-        self.init_train_test()
-        self.learning_rates = [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9]
-        self.optimizer_names = dir(keras.optimizers)
-        self.optimizers = ['Adadelta','Adagrad','Adam','Adamax','Ftrl','Nadam','RMSprop','SGD']
-        self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError', 'Huber',
-                       'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
-                        'Hinge', 'SquaredHinge',
-                       'CategoricalHinge', 'KLDivergence', 'SquaredError']
-        self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
+        self.loader = loader
+        self.formatter = formatter
         self.best_optimizer = None
-#        self.tuner = kt.BayesianOptimization(
-#            self._model_build,
-#            objective='val_loss',
-#            max_trials = 1000,
-#            directory = 'Reward/Data/Models',
-#            project_name='Reward Model',
-#            logger = self.logger,
-#            overwrite=False
-#        )
-        self.tuner2 = kt.BayesianOptimization(
-            self._model_build,
-            objective='val_mean_squared_error',
-            max_trials = 150,
-            directory = 'Reward/Data/Models',
-            project_name='Training attempt mean_squared_error',
-            logger = self.logger,
-            overwrite=True
-        )
-        if str_obj is not None:
-            self.tokenizer = str_obj.hash_text
-            self.padding = str_obj.padding
-            self.vocab = str_obj.get_vocabulary
-        else:
-            self._tokenizer = keras.preprocessing.text.Tokenizer(num_words=100000, oov_token=-1, split=' ')
-            b = copy.deepcopy(self.data_train)["Text"].to_list()
-            b.extend(self.data_test["Text"].to_list())
-            self._tokenizer.fit_on_texts(b)
-            self.tokenizer = self._tokenizer.texts_to_sequences
-            self.padding = keras.preprocessing.sequence.pad_sequences
-        self.model, built = init_model()
-        if not built and build_model:
+        self.model, built = self.init_model()
+        
+        if not built and build_model and False:
+            self.training_data = self.load_training_data()
+            self.learning_rates = [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9]
+            self.optimizers = ['Adadelta','Adagrad','Adam','Adamax','Ftrl','Nadam','RMSprop','SGD']
+            self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError', 'Huber',
+                        'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
+                            'Hinge', 'SquaredHinge',
+                        'CategoricalHinge', 'KLDivergence', 'SquaredError']
+            self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
+            self.tuner2 = kt.BayesianOptimization(
+                self._model_build,
+                objective='val_mean_squared_error',
+                max_trials = 150,
+                directory = 'Reward/Data/Models',
+                project_name='Training attempt mean_squared_error',
+                logger = self.logger,
+                overwrite=False
+            )
             self.build_model()
-    
-    def init_train_data(self):
-        self.data_train = load_csv("Reward/Data/TrainingData/data_train.csv")
-
-    def init_train_test(self):
-        self.data_test = load_csv("Reward/Data/TrainingData/data_test.csv")
+        else:
+            pass
+        
+    def train(self, find_best=False, model=None):
+        if find_best:
+            self.learning_rates = [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9]
+            self.optimizers = ['Adadelta','Adagrad','Adam','Adamax','Ftrl','Nadam','RMSprop','SGD']
+            self.losses = ['MeanSquaredError', 'MeanAbsoluteError', 'MeanAbsolutePercentageError', 'Huber',
+                        'LogCosh', 'BinaryCrossentropy', 'CategoricalCrossentropy',
+                            'Hinge', 'SquaredHinge',
+                        'CategoricalHinge', 'KLDivergence', 'SquaredError']
+            self.activations = ["softmax","softplus",'softsign','relu','tanh','sigmoid','hard_sigmoid','linear']
+            self.tuner2 = kt.BayesianOptimization(
+                self._model_build,
+                objective='val_mean_squared_error',
+                max_trials = 150,
+                directory = 'Reward/Data/Models',
+                project_name='',
+                logger = self.logger,
+                overwrite=False
+            )
+        self.build_model(find_best, model)
         
     def _model_build(self, hp):
         word_input = keras.layers.Input(shape=(300,), name="Word_Input")
@@ -126,67 +96,72 @@ class Reward:
         return model
 
 
-    def build_model(self):
+    def build_model(self, find_best=False, model=None):
 
         if os.path.exists("Reward/Data/TrainingData/InputsandOutputs/inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/outputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/validation_inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy"):
             self.logger.log(logging.INFO, "Loading data from the npy files")
-            input_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/inputs.npy")
+            input_indices = self.loader.load_numpy("Reward/Data/TrainingData/InputsandOutputs/inputs.npy")
             self.logger.log(logging.INFO, f"Loaded input matrix of shape {input_indices.shape}")
-            output_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/outputs.npy")
+            output_indices = self.loader.load_numpy("Reward/Data/TrainingData/InputsandOutputs/outputs.npy")
             self.logger.log(logging.INFO, f"Loaded output matrix of shape {output_indices.shape}")
-            validation_input_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/validation_inputs.npy")
-            self.logger.log(logging.INFO, f"Loaded validation input matrix of shape {validation_input_indices.shape}")
-            validation_output_indices = np.load("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy")
-            self.logger.log(logging.INFO, f"Loaded validation output matrix of shape {validation_output_indices.shape}")
+            val_input_indices = self.loader.load_numpy("Reward/Data/TrainingData/InputsandOutputs/validation_inputs.npy")
+            self.logger.log(logging.INFO, f"Loaded validation input matrix of shape {val_input_indices.shape}")
+            val_output_indices = self.loader.load_numpy("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy")
+            self.logger.log(logging.INFO, f"Loaded validation output matrix of shape {val_output_indices.shape}")
         else:
-            self.logger.log(logging.INFO, "Missing, regenerating training data")
-            input_length = 300
-
-            words_to_numbers = {
-                "neutral": 0,
-                "sadness": -1,
-                "fear": -2,
-                "anger": -3,
-                "joy": 1
-            }
-            for i, v in enumerate(self.data_train["Emotion"]):
-                self.data_train.at[i, "Emotion"] = words_to_numbers[v]
-            for i, v in enumerate(self.data_test["Emotion"]):
-                self.data_test.at[i, "Emotion"] = words_to_numbers[v]
-                
-            input_indices = np.array([0]*input_length)
-            for i in tqdm(self.data_train["Text"], desc="Creating The Input Matrix"):
-                i = [i]
-                if sys.getsizeof(input_indices) >= 1000000000:
-                    self.logger.log(logging.WARNING, f'Input matrix is larger then 1 GB. Size = {sys.getsizeof(input_indices)}')
-                input_indices = np.vstack((input_indices, self.padding(self.tokenizer(i), maxlen=input_length, padding='post', truncating='pre')))
-            np.save("Reward/Data/TrainingData/InputsandOutputs/inputs", input_indices, allow_pickle=True)
-            output_indices = np.array([[0]])
-            for i in tqdm(self.data_train["Emotion"], desc="Creating The Output Matrix"):
-                output_indices = np.vstack((output_indices, [i]))
-            np.save("Reward/Data/TrainingData/InputsandOutputs/outputs", output_indices, allow_pickle=True)
-
-
-            validation_input_indices = np.array([0]*input_length)
-            for i in tqdm(self.data_test["Text"], desc="Creating The Validation Input Matrix"):
-                i = [i]
-                validation_input_indices = np.vstack((validation_input_indices, self.padding(self.tokenizer(i), maxlen=input_length, padding='post', truncating='post')))
-            np.save("Reward/Data/TrainingData/InputsandOutputs/validation_inputs", validation_input_indices, allow_pickle=True)
-            validation_output_indices = np.array([[0]])
-            for i in tqdm(self.data_test["Emotion"], desc="Creating The Validation Output Matrix"):
-                validation_output_indices = np.vstack((validation_output_indices, np.asarray([i])))
-            np.save("Reward/Data/TrainingData/InputsandOutputs/validation_outputs", validation_output_indices,
-                    allow_pickle=True)
-            
-        thingy = np.asarray([1]*input_indices.shape[0])
-        val_thingy = np.asarray([1]*validation_input_indices.shape[0])
+            stuffy = self.load_training_data()
+            if not hasattr(self, 'input_indices'):
+                self.input_indices = stuffy[0][0]
+                self.output_indices = stuffy[0][1]
+                self.val_input_indices = stuffy[1][0]
+                self.val_output_indices = stuffy[1][1]
+                self.thingy = np.asarray([1]*self.input_indices.shape[0])
+                self.val_thingy = np.asarray([1]*self.val_input_indices.shape[0])
         
         self.logger.log(logging.INFO, f'Input loaded with shape {input_indices.shape} and looks like {input_indices}')
         self.logger.log(logging.INFO, f'Output loaded with shape {output_indices.shape} and looks like {output_indices}')
-        self.logger.log(logging.INFO, f'Validation Input loaded with shape {validation_input_indices.shape} and looks like {validation_input_indices}')
-        self.logger.log(logging.INFO, f'Validation Output loaded with shape {validation_output_indices.shape} and looks like {validation_output_indices}')
+        self.logger.log(logging.INFO, f'Validation Input loaded with shape {val_input_indices.shape} and looks like {val_input_indices}')
+        self.logger.log(logging.INFO, f'Validation Output loaded with shape {val_output_indices.shape} and looks like {val_output_indices}')
 
-        self.tuner2.search(x=[input_indices, thingy], y=output_indices, epochs=100, validation_data=([validation_input_indices, val_thingy], validation_output_indices))
-        best_hps = self.tuner2.get_best_models(num_models=3)
-        for i in best_hps:
-            i.save(f'Reward/Data/Models/best_hp-{i}')
+        if model != None and find_best:
+            self.tuner2.search(x=[self.input_indices, self.thingy], y=self.output_indices, epochs=100, validation_data=([self.val_input_indices, self.val_thingy], self.val_output_indices))
+            best_hps = self.tuner2.get_best_models(num_models=3)
+            for i in best_hps:
+                i.save(f'Reward/Data/Models/best_hp-{i}')
+        elif model != None and not find_best:
+            model.fit([self.input_indices, self.thingy], self.output_indices, epochs=100, valudation_data=([self.val_input_indices, self.val_thingy], self.val_output_indices))
+
+    def init_model(self):
+        if not hasattr(self, 'input_indices'):
+            data = self.load_training_data()
+            self.input_indices = data[0][0]
+            self.output_indices = data[0][1]
+            self.val_input_indices = data[1][0]
+            self.val_output_indices = data[1][1]
+            self.thingy = np.asarray([1]*self.input_indices.shape[0])
+            self.val_thingy = np.asarray([1]*self.val_input_indices.shape[0])
+        tensorflow_items = [i for i in os.listdir("Reward/Data/Models") if "best_hp-" in i]
+        if len(tensorflow_items) > 1:
+            models = {}
+            for i in tensorflow_items:
+                model = self.loader.load_model(os.path.join("Reward/Data/Models", i))
+                models[model.evaluate(x=[self.input_indices, self.thingy], y=self.output_indices)] = model
+            return models[sorted(models.keys())[0]]
+        elif len(tensorflow_items) == 1:
+            return self.loader.load_model(os.path.join("Reward/Data/Models", i))
+        
+    def load_training_data(self) -> list:
+        words_to_numbers = {
+            "neutral": 0,
+            "sadness": -1,
+            "fear": -2,
+            "anger": -3,
+            "joy": 1
+        }
+        all_data = []
+        for i, v in enumerate(["Reward/Data/TrainingData/data_train.csv", "Reward/Data/TrainingData/data_test.csv"]):
+            data = self.loader.load_csv(v)
+            for i, v in enumerate(data["Emotion"]):
+                data.at[i, "Emotion"] = words_to_numbers[v]
+            all_data.append([self.formatter.format(data["Text"]), data])
+        return all_data

@@ -1,12 +1,12 @@
 from keras.preprocessing.text import Tokenizer
-from padder import Padder
+from utils.inputs_preparation.padder import Padder
 import pickle
 import os
 
 class TokenizerHandler:
     def __init__(self, load=True, text:str=None, padder=None, tokenizer=Tokenizer(), path:str="Data/"):
         self.path = path
-        if not load:
+        if load:
             self.tokenizer_base = tokenizer
         else:
             self.tokenizer_base = self.load_tokenizer()

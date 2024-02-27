@@ -2,6 +2,8 @@ from Reward.reward2 import Reward
 import logging
 import sys
 import os
+from utils.inputs_preparation.loader import Loader
+from utils.inputs_preparation.formatter import Formatter
 
 try:
     with open("logs/Info.log", 'r') as log:
@@ -57,4 +59,4 @@ logger.addHandler(debug_file_handler)
 logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
 
-a = Reward(logger=logger)
+a = Reward(loader=Loader(),formatter=Formatter(), logger=logger)
