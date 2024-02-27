@@ -41,7 +41,7 @@ def load_data(file):
     return data
 
 
-class Reward():
+class Reward:
     def __init__(self, classes = 5, logger=None, str_obj=None, build_model=True):
         self.num_classes = classes
         self.logger = logger

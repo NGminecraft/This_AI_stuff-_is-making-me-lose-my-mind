@@ -1,21 +1,12 @@
-import keras_tuner as kt
-from Reward.reward2 import Reward
+import os
+"""
+THIS IS THE WORKING CODE FOR LOADING THE TF MODELS
 
-reward = Reward(build_model = False)
-# DO NOT RUN IF TRAINING IS IN PROGRESS
-tuner = kt.BayesianOptimization(
-    reward._model_build,
-    objective='val_loss',
-    max_trials=1000,
-    directory='Reward/Data/Models',
-    project_name='Training attempt 2',
-    overwrite=False
-)
+import keras
 
-try:
-    b = tuner.oracle.get_trial('trial_0014')
-    tuner.hypermodel.build(b)
-    b.summary()
-except KeyError:
-    c = tuner.oracle.get_best_trials(5)
-    print(c)
+b = keras.models.load_model('Reward/Data/Models/best_hp-number1')
+
+b.summary()
+"""
+
+dirs = [for i in os.listdir('Reward/Data/Models/Training attempt 2') if not os.path.isfile(os.path.join('Reward/Data/Models/Training attempt 2'))]
