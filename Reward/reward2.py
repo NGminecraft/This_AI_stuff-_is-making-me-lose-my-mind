@@ -118,17 +118,17 @@ class Reward:
                 self.thingy = np.asarray([1]*self.input_indices.shape[0])
                 self.val_thingy = np.asarray([1]*self.val_input_indices.shape[0])
         
-        self.logger.log(logging.INFO, f'Input loaded with shape {input_indices.shape} and looks like {input_indices}')
-        self.logger.log(logging.INFO, f'Output loaded with shape {output_indices.shape} and looks like {output_indices}')
-        self.logger.log(logging.INFO, f'Validation Input loaded with shape {val_input_indices.shape} and looks like {val_input_indices}')
-        self.logger.log(logging.INFO, f'Validation Output loaded with shape {val_output_indices.shape} and looks like {val_output_indices}')
+        self.logger.log(logging.INFO, f'Input loaded with shape {self.input_indices.shape} and looks like {self.input_indices}')
+        self.logger.log(logging.INFO, f'Output loaded with shape {self.output_indices.shape} and looks like {self.output_indices}')
+        self.logger.log(logging.INFO, f'Validation Input loaded with shape {self.val_input_indices.shape} and looks like {self.val_input_indices}')
+        self.logger.log(logging.INFO, f'Validation Output loaded with shape {self.val_output_indices.shape} and looks like {self.val_output_indices}')
 
-        if model != None and find_best:
+        if model is not None and find_best:
             self.tuner2.search(x=[self.input_indices, self.thingy], y=self.output_indices, epochs=100, validation_data=([self.val_input_indices, self.val_thingy], self.val_output_indices))
             best_hps = self.tuner2.get_best_models(num_models=3)
             for i in best_hps:
                 i.save(f'Reward/Data/Models/best_hp-{i}')
-        elif model != None and not find_best:
+        elif model is not None and not find_best:
             model.fit([self.input_indices, self.thingy], self.output_indices, epochs=100, valudation_data=([self.val_input_indices, self.val_thingy], self.val_output_indices))
 
     def init_model(self):
@@ -148,9 +148,9 @@ class Reward:
                 models[model.evaluate(x=[self.input_indices, self.thingy], y=self.output_indices)] = model
             return models[sorted(models.keys())[0]]
         elif len(tensorflow_items) == 1:
-            return self.loader.load_model(os.path.join("Reward/Data/Models", i))
+            return self.loader.load_model(os.path.join("Reward/Data/Models", tensorflow_items[0]))
         
-    def load_training_data(self) -> list:
+    def load_training_data(self) -> np.array:
         words_to_numbers = {
             "neutral": 0,
             "sadness": -1,
@@ -164,4 +164,4 @@ class Reward:
             for i, v in enumerate(data["Emotion"]):
                 data.at[i, "Emotion"] = words_to_numbers[v]
             all_data.append([self.formatter.format(data["Text"]), data])
-        return all_data
+        return np.asarray(all_data)

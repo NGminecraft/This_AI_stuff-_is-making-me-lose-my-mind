@@ -11,9 +11,9 @@ class Formatter:
 
     def format(self, obj):
         if type(obj[0]) is list:
-            return np.asarray([self.padder.pad(self.tokenizer(i)) for i in obj])
+            return np.asarray([self.padder.pad(self.tokenizer.tokenize(i)) for i in obj])
         else:
             return self.padder.pad(self.tokenizer.tokenize(obj))
 
     def add_texts(self, texts:str):
-        self.tokenizer.add_texts(texts)
+        self.tokenizer.append_token([texts])
