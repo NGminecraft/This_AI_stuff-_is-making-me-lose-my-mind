@@ -20,13 +20,13 @@ class TokenizerHandler:
         else:
             self.current_texts = []
 
-    def refit_tokenizer(self, text:str):
+    def refit_tokenizer(self, text:list):
         self.tokenizer_base.fit_on_texts(text)
 
     def append_token(self, token:list):
         if type(token) is str:
             token = [token]
-        self.refit_tokenizer(" ".join(self._append_to_current_texts(token)))
+        self.refit_tokenizer(self._append_to_current_texts(token))
 
     def _append_to_current_texts(self, item:list):
         for i in item:

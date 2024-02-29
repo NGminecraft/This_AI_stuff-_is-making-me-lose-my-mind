@@ -59,4 +59,4 @@ logger.addHandler(debug_file_handler)
 logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
 
-a = Reward(loader=Loader(),formatter=Formatter(), logger=logger)
+a = Reward(loader=Loader(),formatter=Formatter, logger=logger)
