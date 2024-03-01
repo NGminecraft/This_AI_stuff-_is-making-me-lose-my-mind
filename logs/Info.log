@@ -1,47 +1,7 @@
-2024-02-28 22:13:22,420 - MainLogger - INFO - Initializing
-2024-02-28 22:13:22,420 - MainLogger - WARNING - Initializing Warnings
-2024-02-28 22:13:22,478 - MainLogger - INFO - Received starting text
-2024-02-28 22:13:22,758 - MainLogger - INFO - No model found, creating one
-2024-02-28 22:13:23,461 - MainLogger - INFO - Loading data from the npy files
-2024-02-28 22:13:23,511 - MainLogger - INFO - Loaded input matrix of shape (7934, 300)
-2024-02-28 22:13:23,514 - MainLogger - INFO - Loaded output matrix of shape (7934, 1)
-2024-02-28 22:13:23,537 - MainLogger - INFO - Loaded validation input matrix of shape (3394, 300)
-2024-02-28 22:13:23,540 - MainLogger - INFO - Loaded validation output matrix of shape (3394, 1)
-2024-02-28 22:13:23,540 - MainLogger - INFO - Input loaded with shape (7933, 500) and looks like [[5.500e+01 4.800e+01 7.970e+03 ... 0.000e+00 0.000e+00 0.000e+00]
- [4.250e+02 2.000e+00 3.210e+02 ... 0.000e+00 0.000e+00 0.000e+00]
- [1.000e+01 1.000e+00 7.300e+01 ... 0.000e+00 0.000e+00 0.000e+00]
- ...
- [5.400e+01 1.121e+03 2.600e+01 ... 0.000e+00 0.000e+00 0.000e+00]
- [7.000e+00 3.900e+01 1.400e+01 ... 0.000e+00 0.000e+00 0.000e+00]
- [2.800e+02 3.984e+03 3.000e+00 ... 0.000e+00 0.000e+00 0.000e+00]]
-2024-02-28 22:13:23,543 - MainLogger - INFO - Output loaded with shape (7933,) and looks like 0       0.0
-1      -1.0
-2      -1.0
-3      -1.0
-4      -1.0
-       ... 
-7928   -1.0
-7929   -1.0
-7930   -1.0
-7931   -1.0
-7932   -1.0
-Name: Emotion, Length: 7933, dtype: float32
-2024-02-28 22:13:23,543 - MainLogger - INFO - Validation Input loaded with shape (3393, 500) and looks like [[1.000e+00 7.000e+02 2.900e+01 ... 0.000e+00 0.000e+00 0.000e+00]
- [1.000e+01 1.000e+00 7.400e+01 ... 0.000e+00 0.000e+00 0.000e+00]
- [1.130e+02 2.600e+01 6.041e+03 ... 0.000e+00 0.000e+00 0.000e+00]
- ...
- [1.300e+01 1.910e+02 2.200e+01 ... 0.000e+00 0.000e+00 0.000e+00]
- [2.000e+01 3.100e+01 8.400e+01 ... 0.000e+00 0.000e+00 0.000e+00]
- [1.000e+01 5.950e+02 1.050e+02 ... 0.000e+00 0.000e+00 0.000e+00]]
-2024-02-28 22:13:23,544 - MainLogger - INFO - Validation Output loaded with shape (3393,) and looks like 0      -1.0
-1       0.0
-2      -1.0
-3      -1.0
-4      -1.0
-       ... 
-3388   -1.0
-3389   -1.0
-3390    0.0
-3391   -1.0
-3392   -1.0
-Name: Emotion, Length: 3393, dtype: float32
+2024-03-01 16:21:04,875 - MainLogger - INFO - Initializing
+2024-03-01 16:21:04,876 - MainLogger - WARNING - Initializing Warnings
+2024-03-01 16:21:04,876 - MainLogger - INFO - Activated logging for loading manager
+2024-03-01 16:21:04,905 - MainLogger - INFO - Received starting text
+2024-03-01 16:21:07,131 - MainLogger - INFO - Initialized reward Succsefully
+2024-03-01 16:21:07,131 - MainLogger - INFO - Loaded Object Handler Succsessfully
+2024-03-01 16:21:07,131 - MainLogger - INFO - Sucsefully loaded Memory

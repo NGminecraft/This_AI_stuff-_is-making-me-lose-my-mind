@@ -18,7 +18,7 @@ import inspect
 
 
 class Reward:
-    def __init__(self, loader, formatter:utils.inputs_preparation.formatter, classes = 5, logger=None, build_model=True):
+    def __init__(self, loader, formatter:utils.inputs_preparation.formatter, classes = 5, logger=None, build_model=True, exceptions=None):
         self.num_classes = classes
         self.logger = logger
         self.loader = loader
@@ -29,8 +29,7 @@ class Reward:
         
         if not built and build_model and self.model is None:
             self.train(find_best=True)
-        else:
-            pass
+        self.logger.log(logging.INFO, 'Initialized reward Succsefully')
         
     def train(self, find_best=False, model=None):
         if find_best:

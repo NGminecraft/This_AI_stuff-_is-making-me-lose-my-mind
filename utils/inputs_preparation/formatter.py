@@ -10,7 +10,6 @@ class Formatter:
             self.should_log = True
         else:
             self.should_log = False
-        self.logger.log(logging.DEBUG, starting_text)
         self.tokenizer = tokenizer_handler
         if starting_text is not None:
             self.logger.log(logging.INFO, "Received starting text")

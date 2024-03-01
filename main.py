@@ -2,8 +2,11 @@ from Reward.reward2 import Reward
 import logging
 import sys
 import os
-from utils.inputs_preparation.loader import Loader
+from utils.inputs_preparation.loader import Loader as file_loader
 from utils.inputs_preparation.formatter import Formatter
+from class_loader import Loader as cls_loader
+from Memory.memory import Memory
+import exceptions
 
 try:
     with open("logs/Info.log", 'r') as log:
@@ -59,4 +62,9 @@ logger.addHandler(debug_file_handler)
 logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
 
-a = Reward(loader=Loader(),formatter=Formatter, logger=logger)
+loader = cls_loader(logger=logger, exceptions=exceptions)
+reward_class = loader.load(Reward, loader=loader.load(file_loader), formatter=Formatter)
+
+memory_class = loader.load(Memory)
+
+#a = Reward(loader=Loader(),formatter=Formatter, logger=logger)
