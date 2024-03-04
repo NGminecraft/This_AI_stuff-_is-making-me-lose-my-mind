@@ -61,6 +61,7 @@ logger.addHandler(debug_file_handler)
 
 logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
+logger.propagate = False
 
 loader = cls_loader(logger=logger, exceptions=exceptions)
 reward_class = loader.load(Reward, loader=loader.load(file_loader), formatter=Formatter)

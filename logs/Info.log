@@ -1,7 +1,7 @@
-2024-03-01 16:21:04,875 - MainLogger - INFO - Initializing
-2024-03-01 16:21:04,876 - MainLogger - WARNING - Initializing Warnings
-2024-03-01 16:21:04,876 - MainLogger - INFO - Activated logging for loading manager
-2024-03-01 16:21:04,905 - MainLogger - INFO - Received starting text
-2024-03-01 16:21:07,131 - MainLogger - INFO - Initialized reward Succsefully
-2024-03-01 16:21:07,131 - MainLogger - INFO - Loaded Object Handler Succsessfully
-2024-03-01 16:21:07,131 - MainLogger - INFO - Sucsefully loaded Memory
+2024-03-01 16:34:32,598 - MainLogger - INFO - Initializing
+2024-03-01 16:34:32,598 - MainLogger - WARNING - Initializing Warnings
+2024-03-01 16:34:32,598 - MainLogger - INFO - Activated logging for loading manager
+2024-03-01 16:34:32,620 - MainLogger - INFO - Received starting text
+2024-03-01 16:34:34,825 - MainLogger - INFO - Initialized reward Succsefully
+2024-03-01 16:34:34,825 - MainLogger - INFO - Loaded Object Handler Succsessfully
+2024-03-01 16:34:34,826 - MainLogger - INFO - Sucsefully loaded Memory

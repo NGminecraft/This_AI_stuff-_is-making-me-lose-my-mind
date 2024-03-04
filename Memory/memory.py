@@ -30,3 +30,5 @@ class Memory:
         if type(word) is list:
             for i in word:
                 pass
+        elif type(word) is str:
+            pass
