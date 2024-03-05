@@ -18,18 +18,18 @@ import inspect
 
 
 class Reward:
-    def __init__(self, loader, formatter:utils.inputs_preparation.formatter, classes = 5, logger=None, build_model=True, exceptions=None):
+    def __init__(self, loader, formatter, classes = 5, logger=None, build_model=True, exceptions=None):
         self.num_classes = classes
         self.logger = logger
         self.loader = loader
         all_training_text = self.loader.load_csv("Reward/Data/TrainingData/data_test.csv")["Text"].tolist()
         all_training_text.extend(self.loader.load_csv("Reward/Data/TrainingData/data_train.csv")["Text"].tolist())
-        self.formatter = formatter(logger=logger, starting_text=all_training_text)
+        self.formatter = formatter
         self.model, built = self.init_model()
-        
+
         if not built and build_model and self.model is None:
             self.train(find_best=True)
-        self.logger.log(logging.INFO, 'Initialized reward Succsefully')
+        self.logger.log(logging.INFO, 'Initialized reward Successfully')
         
     def train(self, find_best=False, model=None):
         if find_best:
@@ -83,7 +83,6 @@ class Reward:
 
 
     def build_model(self, find_best=False, model=None):
-
         if os.path.exists("Reward/Data/TrainingData/InputsandOutputs/inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/outputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/validation_inputs.npy") and os.path.exists("Reward/Data/TrainingData/InputsandOutputs/validation_outputs.npy"):
             self.logger.log(logging.INFO, "Loading data from the npy files")
             input_indices = self.loader.load_numpy("Reward/Data/TrainingData/InputsandOutputs/inputs.npy")
@@ -97,12 +96,7 @@ class Reward:
         else:
             stuffy = self.load_training_data()
             if not hasattr(self, 'input_indices'):
-                self.input_indices = stuffy[0][0].astype('float32')
-                self.output_indices = stuffy[0][1].astype('float32')
-                self.val_input_indices = stuffy[1][0].astype('float32')
-                self.val_output_indices = stuffy[1][1].astype('float32')
-                self.thingy = np.asarray([1]*self.input_indices.shape[0]).astype('float32')
-                self.val_thingy = np.asarray([1]*self.val_input_indices.shape[0]).astype('float32')
+                self.create_training_data()
             self.input_indices.save("Reward/Data/InputsandOutputs/inputs.npy")
             self.input_indices.save("Reward/Data/InputsandOutputs/outputs.npy")
             self.input_indices.save("Reward/Data/InputsandOutputs/validation_inputs.npy")
@@ -125,26 +119,25 @@ class Reward:
 
 
     def init_model(self):
-        if not hasattr(self, 'input_indices'):
-            data = self.load_training_data()
-            self.input_indices = data[0][0].astype('float32')
-            self.output_indices = data[0][1].astype('float32')
-            self.val_input_indices = data[1][0].astype('float32')
-            self.val_output_indices = data[1][1].astype('float32')
-            self.thingy = np.asarray([1]*self.input_indices.shape[0]).astype('float32')
-            self.val_thingy = np.asarray([1]*self.val_input_indices.shape[0]).astype('float32')
-        tensorflow_items = [i for i in os.listdir("Reward/Data/Models") if "best_hp-" in i]
-        if len(tensorflow_items) > 1:
-            models = {}
-            for i in tensorflow_items:
-                model = self.loader.load_model(os.path.join("Reward/Data/Models", i))
-                models[model.evaluate(x=[self.input_indices, self.thingy], y=self.output_indices)] = model
-            return models[sorted(models.keys())[0]], True
-        elif len(tensorflow_items) == 1:
-            return self.loader.load_model(os.path.join("Reward/Data/Models", tensorflow_items[0])), True
+        if os.path.exists(f'Reward/Data/Models/RewardModel.keras'):
+            return keras.saving.load_model(f'Reward/Data/Models/RewardModel.keras'), True
         else:
-            self.logger.log(logging.INFO, "No model found, creating one")
-            return None, False
+            if not hasattr(self, 'input_indices'):
+                self.create_training_data()
+            tensorflow_items = [i for i in os.listdir("Reward/Data/Models") if "best_hp-" in i]
+            if len(tensorflow_items) > 1:
+                models = {}
+                for i in tensorflow_items:
+                    model = self.loader.load_model(os.path.join("Reward/Data/Models", i))
+                    models[model.evaluate(x=[self.input_indices, self.thingy], y=self.output_indices)] = model
+                keras.saving.save_model(models[sorted(models.keys())[0]], "Reward/Data/Models/RewardModel")
+                return models[sorted(models.keys())[0]], True
+            elif len(tensorflow_items) == 1:
+                keras.saving.save_model('Reward/Data/Models/RewardModel')
+                return self.loader.load_model(os.path.join("Reward/Data/Models", tensorflow_items[0])), True
+            else:
+                self.logger.log(logging.INFO, "No model found, creating one")
+                return None, False
 
         
     def load_training_data(self) -> np.array:
@@ -160,5 +153,18 @@ class Reward:
             data = self.loader.load_csv(v)
             for index, value in enumerate(data["Emotion"]):
                 data.at[index, "Emotion"] = words_to_numbers[value]
-            all_data.append([self.formatter.format(data["Text"]), data["Emotion"]])
+            all_data.append([self.formatter.format(data["Text"].tolist()), self.formatter.format(data["Emotion"].tolist())])
         return all_data
+
+    def create_training_data(self) -> np.array:
+        data = self.load_training_data()
+        self.input_indices = data[0][0].astype('float32')
+        self.output_indices = data[0][1].astype('float32')
+        if self.input_indices.shape[0] != self.output_indices.shape[0]:
+            self.logger.log(logging.ERROR, f"Input and Outputs are different sizes INPUT:{self.input_indices.shape[0]} vs OUTPUT:{self.output_indices.shape[0]}")
+        self.val_input_indices = data[1][0].astype('float32')
+        self.val_output_indices = data[1][1].astype('float32')
+        if self.val_input_indices.shape[0] != self.val_output_indices.shape[0]:
+            self.logger.log(logging.ERROR, f"Validation Input and Outputs are different sizes INPUT:{self.val_input_indices.shape[0]} vs OUTPUT:{self.val_output_indices.shape[0]}")
+        self.thingy = np.asarray([1]*self.input_indices.shape[0]).astype('float32')
+        self.val_thingy = np.asarray([1]*self.val_input_indices.shape[0]).astype('float32')

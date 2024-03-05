@@ -4,7 +4,7 @@ import pickle
 import threading
 import logging
 from Memory.object_handler import Handler as oh
-from Memory.memory_model import MemMod
+from Memory.memory_model import MemModel
 
 class Memory:
     def __init__(self, exceptions, logger = None, file="Memory/Data/Memory.npy", should_log = True, module_loader = None, formatter=None):
@@ -14,7 +14,8 @@ class Memory:
             self.logger = logger
             self.should_log = should_log
         if os.path.exists(file):
-            self.memory_arr = pickle.load(file)
+            with open(file, "rb") as f:
+                self.memory_arr = pickle.load(f)
         else:
             self.build_memory(file)
         if module_loader:
@@ -23,9 +24,9 @@ class Memory:
             self.object_handler = oh()
         if module_loader is not None:
             self.loader = module_loader
-            self.model = module_loader.load(MemMod)
+            self.model = module_loader.load(MemModel)
         if self.should_log:
-            self.logger.log(logging.INFO, 'Sucsefully loaded Memory')
+            self.logger.log(logging.INFO, 'Successfully loaded Memory')
             
     def build_memory(self, file="Memory/Data/Memory.npy"):
         self.object_dict = {}

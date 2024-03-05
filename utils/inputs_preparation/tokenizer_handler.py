@@ -1,3 +1,4 @@
+import pandas
 from keras.preprocessing.text import Tokenizer
 from utils.inputs_preparation.padder import Padder
 import pickle
@@ -15,11 +16,6 @@ class TokenizerHandler:
             self.padder = None
         else:
             self.padder = Padder()
-        if text is not None:
-            self.current_texts = text
-            self.tokenizer_base.fit_on_texts(self.refit_tokenizer(text))
-        else:
-            self.current_texts = []
         
     def list_to_tokens(self, items:list) -> list:
         return self.create_token(items)
@@ -38,13 +34,17 @@ class TokenizerHandler:
 
     def create_token(self, item:list|str):
         if type(item) is str:
-            item = [str]
+            item = [item]
         tokenized_list =  []
-        for i in item:
-            if i not in self.cache.keys():
-                token = int(''.join([str(j) for j in i])) / len(i)
-                self.cache[i] = token
-                tokenized_list.append(token)
-            else:
-                tokenized_list.append(self.cache[i])
+        if type(item) is pandas.Series:
+            item = item.tolist()
+        for j in item:
+            print(j)
+            for i in j.split(' '):
+                if i not in self.cache.keys() and i != '':
+                    token = int(''.join([str(ord(j)) for j in i])) / len(i)
+                    self.cache[i] = token
+                    tokenized_list.append(token)
+                elif i != '':
+                    tokenized_list.append(self.cache[i])
         return tokenized_list

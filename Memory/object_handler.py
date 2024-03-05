@@ -23,9 +23,9 @@ class Handler:
             self.exceptions = exceptions
             self.errors = True
         else:
-            self.erros = False
+            self.errors = False
         if self.should_log:
-            self.logger.log(logging.INFO, 'Loaded Object Handler Succsessfully')
+            self.logger.log(logging.INFO, 'Loaded Object Handler Successfully')
             
             
     def add(self):
