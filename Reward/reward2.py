@@ -29,6 +29,7 @@ class Reward:
 
         if not built and build_model and self.model is None:
             self.train(find_best=True)
+        keras.saving.save_model(self.model, "Reward/Data/Models/RewardModel.keras")
         self.logger.log(logging.INFO, 'Initialized reward Successfully')
         
     def train(self, find_best=False, model=None):
@@ -133,8 +134,9 @@ class Reward:
                 keras.saving.save_model(models[sorted(models.keys())[0]], "Reward/Data/Models/RewardModel")
                 return models[sorted(models.keys())[0]], True
             elif len(tensorflow_items) == 1:
-                keras.saving.save_model('Reward/Data/Models/RewardModel')
-                return self.loader.load_model(os.path.join("Reward/Data/Models", tensorflow_items[0])), True
+                model = self.loader.load_model(os.path.join("Reward/Data/Models", tensorflow_items[0]))
+                keras.saving.save_model(model, 'Reward/Data/Models/RewardModel')
+                return model, True
             else:
                 self.logger.log(logging.INFO, "No model found, creating one")
                 return None, False

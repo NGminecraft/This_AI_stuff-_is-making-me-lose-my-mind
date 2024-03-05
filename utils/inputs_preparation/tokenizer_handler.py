@@ -40,6 +40,8 @@ class TokenizerHandler:
             item = item.tolist()
         for j in item:
             print(j)
+            if type(j) is int|float:
+                return j
             for i in j.split(' '):
                 if i not in self.cache.keys() and i != '':
                     token = int(''.join([str(ord(j)) for j in i])) / len(i)
