@@ -1,4 +1,5 @@
 import inspect
+from utils.inputs_preparation.formatter import Formatter
 
 class Loader:
     def __init__(self, logger, exceptions):
@@ -13,4 +14,6 @@ class Loader:
             kwargs['logger'] = self.logger
         if 'module_loader' in a[0]:
             kwargs['module_loader'] = self
+        if 'formatter' in a[0]:
+            kwargs['formatter'] = Formatter()
         return obj(**kwargs)

@@ -6,6 +6,7 @@ import os
 class TokenizerHandler:
     def __init__(self, load=True, text:str=None, padder=None, tokenizer=Tokenizer(), path:str="Data/"):
         self.path = path
+        self.cache = {}
         if load:
             self.tokenizer_base = tokenizer
         else:
@@ -19,32 +20,31 @@ class TokenizerHandler:
             self.tokenizer_base.fit_on_texts(self.refit_tokenizer(text))
         else:
             self.current_texts = []
-
-    def refit_tokenizer(self, text:list):
-        self.tokenizer_base.fit_on_texts(text)
-
-    def append_token(self, token:list):
-        if type(token) is str:
-            token = [token]
-        self.refit_tokenizer(self._append_to_current_texts(token))
-
-    def _append_to_current_texts(self, item:list):
-        for i in item:
-            if i not in self.current_texts:
-                self.current_texts.append(i)
-        return self.current_texts
-
+        
     def list_to_tokens(self, items:list) -> list:
-        return self.tokenizer_base.texts_to_sequences(items)
+        return self.create_token(items)
 
-    def tokenize(self, text:list, padding:bool=False) -> list:
+    def tokenize(self, text:list) -> list:
         """Alternate naming for turning list into tokens"""
         return self.list_to_tokens(text)
 
     def save(self):
         with open(f"{self.path}tokenizer.pickle", "wb") as file:
-            pickle.dump(self.tokenizer_base, file, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.cache, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     def load_tokenizer(self):
         with open(f"{self.path}tokenizer.pickle", "rb") as file:
             return pickle.load(file)
+
+    def create_token(self, item:list|str):
+        if type(item) is str:
+            item = [str]
+        tokenized_list =  []
+        for i in item:
+            if i not in self.cache.keys():
+                token = int(''.join([str(j) for j in i])) / len(i)
+                self.cache[i] = token
+                tokenized_list.append(token)
+            else:
+                tokenized_list.append(self.cache[i])
+        return tokenized_list
