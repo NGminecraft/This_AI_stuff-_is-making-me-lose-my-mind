@@ -17,9 +17,12 @@ class MemModel:
             self.should_have_errors = False
         
         if os.path.exists(path+"/mem_model.keras"):
+            self.model = keras.saving.load_model(path+"/mem_model.keras")
             if self.should_log:
                 self.logger.log(logging.INFO, 'Found model, loading')
-            self.model = keras.saving.load_model(path+"/mem_model.keras")
+                self.logger.log(logging.INFO, '')
+                self.model.summary(print_fn=self.logger.info)
+                self.logger.log(logging.INFO, '')
         else:
             if self.should_log:
                 self.logger.log(logging.INFO, 'No model found, building a new one')
