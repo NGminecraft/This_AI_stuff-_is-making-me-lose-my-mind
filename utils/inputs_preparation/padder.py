@@ -5,7 +5,7 @@ class Padder:
         self.length = length
         self.value = value
 
-    def pad(self, sequence:list, length_override:int=None):
+    def pad(self, sequence:list, length_override:int=None, **kwargs):
         if length_override is None:
             sequence.extend([self.value] * (self.length - len(sequence)))
         else:

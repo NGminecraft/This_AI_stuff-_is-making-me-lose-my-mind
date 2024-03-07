@@ -1,39 +1,57 @@
-2024-03-05 16:15:23,929 - MainLogger - INFO - Initializing
-2024-03-05 16:15:23,929 - MainLogger - WARNING - Initializing Warnings
-2024-03-05 16:15:23,929 - MainLogger - INFO - Activated logging for loading manager
-2024-03-05 16:15:27,257 - MainLogger - INFO - Initialized reward Successfully
-2024-03-05 16:15:27,258 - MainLogger - INFO - Loaded Object Handler Successfully
-2024-03-05 16:15:28,643 - MainLogger - INFO - Found model, loading
-2024-03-05 16:15:28,643 - MainLogger - INFO - 
-2024-03-05 16:15:28,644 - MainLogger - INFO - Model: "model"
-2024-03-05 16:15:28,644 - MainLogger - INFO - __________________________________________________________________________________________________
-2024-03-05 16:15:28,644 - MainLogger - INFO -  Layer (type)                Output Shape                 Param #   Connected to                  
-2024-03-05 16:15:28,644 - MainLogger - INFO - ==================================================================================================
-2024-03-05 16:15:28,645 - MainLogger - INFO -  input_1 (InputLayer)        [(None, None, 20)]           0         []                            
-2024-03-05 16:15:28,645 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,645 - MainLogger - INFO -  input_2 (InputLayer)        [(None, None, 500)]          0         []                            
-2024-03-05 16:15:28,646 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,646 - MainLogger - INFO -  masking (Masking)           (None, None, 20)             0         ['input_1[0][0]']             
-2024-03-05 16:15:28,646 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,646 - MainLogger - INFO -  masking_1 (Masking)         (None, None, 500)            0         ['input_2[0][0]']             
-2024-03-05 16:15:28,647 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,647 - MainLogger - INFO -  lstm (LSTM)                 (None, None, 1)              88        ['masking[0][0]']             
-2024-03-05 16:15:28,647 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,648 - MainLogger - INFO -  lstm_1 (LSTM)               (None, None, 1)              2008      ['masking_1[0][0]']           
-2024-03-05 16:15:28,648 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,648 - MainLogger - INFO -  add (Add)                   (None, None, 1)              0         ['lstm[0][0]',                
-2024-03-05 16:15:28,648 - MainLogger - INFO -                                                                      'lstm_1[0][0]']              
-2024-03-05 16:15:28,649 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,649 - MainLogger - INFO -  dense (Dense)               (None, None, 20)             40        ['add[0][0]']                 
-2024-03-05 16:15:28,649 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,649 - MainLogger - INFO -  dense_1 (Dense)             (None, None, 10)             210       ['dense[0][0]']               
-2024-03-05 16:15:28,650 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,651 - MainLogger - INFO -  dense_2 (Dense)             (None, None, 1)              11        ['dense_1[0][0]']             
-2024-03-05 16:15:28,651 - MainLogger - INFO -                                                                                                   
-2024-03-05 16:15:28,651 - MainLogger - INFO - ==================================================================================================
-2024-03-05 16:15:28,652 - MainLogger - INFO - Total params: 2357 (9.21 KB)
-2024-03-05 16:15:28,652 - MainLogger - INFO - Trainable params: 2357 (9.21 KB)
-2024-03-05 16:15:28,652 - MainLogger - INFO - Non-trainable params: 0 (0.00 Byte)
-2024-03-05 16:15:28,653 - MainLogger - INFO - __________________________________________________________________________________________________
-2024-03-05 16:15:28,653 - MainLogger - INFO - 
-2024-03-05 16:15:28,653 - MainLogger - INFO - Successfully loaded Memory
+2024-03-07 15:35:06,548 - MainLogger - INFO - Initializing
+2024-03-07 15:35:06,549 - MainLogger - WARNING - Initializing Warnings
+2024-03-07 15:35:06,549 - MainLogger - INFO - Activated logging for loading manager
+2024-03-07 15:35:10,722 - MainLogger - INFO - Initialized reward Successfully
+2024-03-07 15:35:10,723 - MainLogger - INFO - Loaded Object Handler Successfully
+2024-03-07 15:35:12,239 - MainLogger - INFO - Found model, loading
+2024-03-07 15:35:12,240 - MainLogger - INFO - 
+2024-03-07 15:35:12,240 - MainLogger - INFO - Model: "model"
+2024-03-07 15:35:12,241 - MainLogger - INFO - __________________________________________________________________________________________________
+2024-03-07 15:35:12,241 - MainLogger - INFO -  Layer (type)                Output Shape                 Param #   Connected to                  
+2024-03-07 15:35:12,241 - MainLogger - INFO - ==================================================================================================
+2024-03-07 15:35:12,242 - MainLogger - INFO -  input_1 (InputLayer)        [(None, None, 20)]           0         []                            
+2024-03-07 15:35:12,242 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,243 - MainLogger - INFO -  input_2 (InputLayer)        [(None, None, 500)]          0         []                            
+2024-03-07 15:35:12,243 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,243 - MainLogger - INFO -  masking (Masking)           (None, None, 20)             0         ['input_1[0][0]']             
+2024-03-07 15:35:12,244 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,244 - MainLogger - INFO -  masking_1 (Masking)         (None, None, 500)            0         ['input_2[0][0]']             
+2024-03-07 15:35:12,244 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,245 - MainLogger - INFO -  lstm (LSTM)                 (None, None, 1)              88        ['masking[0][0]']             
+2024-03-07 15:35:12,245 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,246 - MainLogger - INFO -  lstm_1 (LSTM)               (None, None, 1)              2008      ['masking_1[0][0]']           
+2024-03-07 15:35:12,246 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,246 - MainLogger - INFO -  add (Add)                   (None, None, 1)              0         ['lstm[0][0]',                
+2024-03-07 15:35:12,247 - MainLogger - INFO -                                                                      'lstm_1[0][0]']              
+2024-03-07 15:35:12,247 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,248 - MainLogger - INFO -  dense (Dense)               (None, None, 20)             40        ['add[0][0]']                 
+2024-03-07 15:35:12,248 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,248 - MainLogger - INFO -  dense_1 (Dense)             (None, None, 10)             210       ['dense[0][0]']               
+2024-03-07 15:35:12,249 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,249 - MainLogger - INFO -  dense_2 (Dense)             (None, None, 1)              11        ['dense_1[0][0]']             
+2024-03-07 15:35:12,249 - MainLogger - INFO -                                                                                                   
+2024-03-07 15:35:12,250 - MainLogger - INFO - ==================================================================================================
+2024-03-07 15:35:12,251 - MainLogger - INFO - Total params: 2357 (9.21 KB)
+2024-03-07 15:35:12,251 - MainLogger - INFO - Trainable params: 2357 (9.21 KB)
+2024-03-07 15:35:12,252 - MainLogger - INFO - Non-trainable params: 0 (0.00 Byte)
+2024-03-07 15:35:12,252 - MainLogger - INFO - __________________________________________________________________________________________________
+2024-03-07 15:35:12,252 - MainLogger - INFO - 
+2024-03-07 15:35:12,252 - MainLogger - INFO - Loaded memory model, testing
+2024-03-07 15:35:12,253 - MainLogger - DEBUG - [[[84 69 83 84 73 78 71  0  0  0  0  0  0  0  0  0  0  0  0  0]]]
+2024-03-07 15:35:12,253 - MainLogger - DEBUG - [[[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0]]]
+2024-03-07 15:35:12,455 - MainLogger - INFO - Testing Completed
+2024-03-07 15:35:12,455 - MainLogger - INFO - Successfully loaded Memory

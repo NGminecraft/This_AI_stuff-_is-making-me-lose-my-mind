@@ -1,9 +1,11 @@
 import os
 import keras
 import logging
+import numpy as np
 
 class MemModel:
     def __init__(self, logger=None, exceptions=None, path="Memory/Data/", module_loader=None, formatter=None):
+        self.formatter = formatter
         if logger is not None:
             self.logger = logger
             self.should_log = True
@@ -27,6 +29,9 @@ class MemModel:
             if self.should_log:
                 self.logger.log(logging.INFO, 'No model found, building a new one')
             self.first_build(path)
+        self.logger.log(logging.INFO, 'Loaded memory model, testing')
+        self.create_value("TESTING", "This is a TESTING sentence")
+        self.logger.log(logging.INFO, 'Testing Completed')
             
     @staticmethod
     def _build():
@@ -35,10 +40,12 @@ class MemModel:
         sentence_input = layers_obj.Input((None,500))
 
         word_mask = layers_obj.Masking(mask_value=0)(word_input)
-        lstm_word = layers_obj.LSTM(activation='tanh', units=1, recurrent_activation='sigmoid', return_sequences=True)(word_mask)
+        reshape = layers_obj.Reshape((None, 1, 20))(word_mask)
+        lstm_word = layers_obj.LSTM(activation='tanh', units=20, recurrent_activation='sigmoid', return_sequences=True)(reshape)
 
         sentence_mask = layers_obj.Masking(mask_value=0)(sentence_input)
-        lstm_sentence = layers_obj.LSTM(activation='tanh', units=1, recurrent_activation='sigmoid', return_sequences=True)(sentence_mask)
+        reshape = layers_obj.Reshape((None, 1, 500))(sentence_mask)
+        lstm_sentence = layers_obj.LSTM(activation='tanh', units=20, recurrent_activation='sigmoid', return_sequences=True)(reshape)
 
         adder = layers_obj.add([lstm_word, lstm_sentence])
 
@@ -47,7 +54,6 @@ class MemModel:
         output = layers_obj.Dense(1, activation='linear')(dense_2)
 
         return keras.Model(inputs=[word_input, sentence_input], outputs=output)
-        
             
     def first_build(self, path):
         model = self._build()
@@ -61,5 +67,6 @@ class MemModel:
     def create_value(self, word:str, context:list|str) -> float:
         if type(context) is str:
             context = " ".split(context)
-        word = "".split(word)
-        return self.model(word, context)
+        inputWord = self.formatter.format(True, (1, 1, -1), word, length_override=20)
+        inputSentence = self.formatter.format(False, (1, 1, -1), context)
+        return self.model([inputWord, inputSentence], training=False)

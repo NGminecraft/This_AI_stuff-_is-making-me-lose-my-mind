@@ -17,7 +17,7 @@ class Memory:
             with open(file, "rb") as f:
                 self.memory_arr = pickle.load(f)
         else:
-            self.build_memory(file)
+            self._build_memory(file)
         if module_loader:
             self.object_handler = module_loader.load(oh)
         else:
@@ -28,12 +28,12 @@ class Memory:
         if self.should_log:
             self.logger.log(logging.INFO, 'Successfully loaded Memory')
             
-    def build_memory(self, file="Memory/Data/Memory.npy"):
+    def _build_memory(self, file="Memory/Data/Memory.npy"):
         self.object_dict = {}
         
     def new_word(self, word:list|str):
         if type(word) is list:
             for i in word:
-                pass
+                self.object_dict[i] = self.model.create_value(i)
         elif type(word) is str:
-            pass
+            self.object_dict[i] = self.model.create_value(i)

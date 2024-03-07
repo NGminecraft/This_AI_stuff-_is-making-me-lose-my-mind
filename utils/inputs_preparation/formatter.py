@@ -14,13 +14,26 @@ class Formatter:
         self.tokenizer = tokenizer_handler
         self.padder = padder
 
-    def format(self, *args):
-        if type(args[0]) is list:
+    def format(self, wordList=False, shape=(1, 1, -1), *args, **kwargs) -> np.array:
+        if type(args[0]) is list and not wordList:
             obj_size = len(args)
-            item = [self.padder.pad(self.tokenizer.tokenize(i)) for i in args]
+            item = [self.padder.pad(self.tokenizer.tokenize(i), **kwargs) for i in args]
             if len(item) != obj_size and self.should_log:
                 self.logger.log(logging.ERROR, f"Size Mismatch: {obj_size} vs {len(args)}")
-            return np.asarray(item)
+            if shape is not None:
+                return np.reshape(np.asarray(item), shape)
+            else:
+                return np.asarray(item)
+        elif wordList:
+            args = [list(i) for i in args]
+            items = np.asarray([self.padder.pad(k, **kwargs) for k in [[ord(str(j)) for j in i] for i in args]])
+            if shape is not None:
+                return np.reshape(items, shape)
+            else:
+                return items
         else:
             item = self.padder.pad(self.tokenizer.tokenize(args))
-            return np.asarray(item)
+            if shape is not None:
+                return np.reshape(np.asarray(item), shape)
+            else:
+                return np.asarray(item)
