@@ -62,7 +62,6 @@ logger.addHandler(debug_file_handler)
 
 logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
-<<<<<<< HEAD
 logger.propagate = False
 
 loader = cls_loader(logger=logger, exceptions=exceptions, formatter=Formatter(logger=logger), file_save=file_save, file_load=file_loader)
@@ -76,7 +75,3 @@ loader.formatter = memory_class
 reward_class = loader.load(Reward, formatter=Formatter)
 
 loader.begin_save()
-=======
-
-a = Reward(loader=Loader(),formatter=Formatter, logger=logger)
->>>>>>> 9009aa6 (Final training)
