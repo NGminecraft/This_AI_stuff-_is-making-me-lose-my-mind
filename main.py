@@ -7,6 +7,8 @@ from utils.inputs_preparation.formatter import Formatter
 from class_loader import Loader as cls_loader
 from Memory.memory import Memory
 import exceptions
+from saving import Save
+from utils.savingOrLoading.saving import Save as file_save
 
 try:
     with open("logs/Info.log", 'r') as log:
@@ -63,7 +65,9 @@ logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
 logger.propagate = False
 
-loader = cls_loader(logger=logger, exceptions=exceptions, formatter=Formatter(logger=logger))
+loader = cls_loader(logger=logger, exceptions=exceptions, formatter=Formatter(logger=logger), file_save=file_save, saver=Save)
 reward_class = loader.load(Reward, loader=loader.load(file_loader), formatter=Formatter)
 
 memory_class = loader.load(Memory)
+
+loader.begin_save()

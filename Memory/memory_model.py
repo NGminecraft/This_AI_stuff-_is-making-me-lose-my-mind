@@ -4,22 +4,22 @@ import logging
 import numpy as np
 
 class MemModel:
-    def __init__(self, logger=None, exceptions=None, path="Memory/Data/", module_loader=None, formatter=None):
+    def __init__(self, logger=None, exceptions=None, path="Memory/Data/", module_loader=None, formatter=None, saver=None):
         self.formatter = formatter
         if logger is not None:
             self.logger = logger
             self.should_log = True
         else:
             self.should_log = False
-        
+        self.saver = saver
         if exceptions is not None:
             self.exceptions = logger
             self.should_have_errors = True
         else:
             self.should_have_errors = False
         
-        if os.path.exists(path+"/mem_model.keras"):
-            self.model = keras.saving.load_model(path+"/mem_model.keras")
+        if os.path.exists(path+"/memory_model.keras"):
+            self.model = keras.saving.load_model(path+"/memory_model.keras")
             if self.should_log:
                 self.logger.log(logging.INFO, 'Found model, loading')
                 self.logger.log(logging.INFO, '')
@@ -40,11 +40,11 @@ class MemModel:
         sentence_input = layers_obj.Input((None,500))
 
         word_mask = layers_obj.Masking(mask_value=0)(word_input)
-        reshape = layers_obj.Reshape((None, 1, 20))(word_mask)
+        reshape = layers_obj.Reshape((1, 20))(word_mask)
         lstm_word = layers_obj.LSTM(activation='tanh', units=20, recurrent_activation='sigmoid', return_sequences=True)(reshape)
 
         sentence_mask = layers_obj.Masking(mask_value=0)(sentence_input)
-        reshape = layers_obj.Reshape((None, 1, 500))(sentence_mask)
+        reshape = layers_obj.Reshape((1, 500))(sentence_mask)
         lstm_sentence = layers_obj.LSTM(activation='tanh', units=20, recurrent_activation='sigmoid', return_sequences=True)(reshape)
 
         adder = layers_obj.add([lstm_word, lstm_sentence])
@@ -60,7 +60,8 @@ class MemModel:
         model.compile(loss=keras.losses.binary_crossentropy, optimizer="Adamax", metrics=["Accuracy"])
         self.logger.log(logging.DEBUG, str(model))
         self.logger.log(logging.INFO, 'Built Memory Model')
-        keras.saving.save_model(model, path+"/mem_model.keras")
+        if self.saver is not None:
+            self.saver.save_model(model, path+"/memory_model.keras")
         b = model.summary()
         print(b)
 

@@ -7,7 +7,7 @@ from Memory.object_handler import Handler as oh
 from Memory.memory_model import MemModel
 
 class Memory:
-    def __init__(self, exceptions, logger = None, file="Memory/Data/Memory.npy", should_log = True, module_loader = None, formatter=None):
+    def __init__(self, exceptions, saver, logger = None, file="Memory/Data/Memory.npy", should_log = True, module_loader = None):
         if exceptions is not None:
             self.exceptions = exceptions
         if logger is not None:
@@ -17,7 +17,7 @@ class Memory:
             with open(file, "rb") as f:
                 self.memory_arr = pickle.load(f)
         else:
-            self._build_memory(file)
+            self._build_memory()
         if module_loader:
             self.object_handler = module_loader.load(oh)
         else:
@@ -27,8 +27,9 @@ class Memory:
             self.model = module_loader.load(MemModel)
         if self.should_log:
             self.logger.log(logging.INFO, 'Successfully loaded Memory')
+        self.file_saver = saver
             
-    def _build_memory(self, file="Memory/Data/Memory.npy"):
+    def _build_memory(self):
         self.object_dict = {}
         
     def new_word(self, word:list|str):
@@ -37,3 +38,6 @@ class Memory:
                 self.object_dict[i] = self.model.create_value(i)
         elif type(word) is str:
             self.object_dict[i] = self.model.create_value(i)
+            
+    def save(self):
+        self.file_saver.save_model(self.model, "Memory/Data/memory_model.keras", 'memory model')
