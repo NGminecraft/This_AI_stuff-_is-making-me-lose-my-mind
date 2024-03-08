@@ -5,7 +5,8 @@ import logging
 import pandas
 
 class Formatter:
-    def __init__(self, tokenizer_handler=TokenizerHandler(), padder=Padder(), logger=None):
+    def __init__(self, tokenizer_handler=TokenizerHandler, padder=Padder(), logger=None, memory=None):
+        tokenizer_handler = tokenizer_handler(memory=memory)
         if logger is not None:
             self.logger = logger
             self.should_log = True
@@ -15,6 +16,7 @@ class Formatter:
         self.padder = padder
 
     def format(self, wordList=False, shape=(1, 1, -1), *args, **kwargs) -> np.array:
+        self.logger.log(logging.DEBUG, args)
         if type(args[0]) is list and not wordList:
             obj_size = len(args)
             item = [self.padder.pad(self.tokenizer.tokenize(i), **kwargs) for i in args]

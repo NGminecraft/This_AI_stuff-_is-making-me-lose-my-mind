@@ -36,6 +36,7 @@ class TokenizerHandler:
             return pickle.load(file)
 
     def _create_token(self, item:list|str):
+        print('HELLO')
         if type(item) is str:
             item = [item]
         tokenized_list =  []
@@ -44,11 +45,9 @@ class TokenizerHandler:
         for j in item:
             if type(j) is bool:
                 continue
-            if type(j) is int|float:
-                return j
             for i in j.split(' '):
                 if i not in self.cache.keys() and i != '':
-                    token = int(''.join([str(ord(j)) for j in i])) / len(i)
+                    token = self._loadder(i) # This is the thingy acually creating the token.
                     self.cache[i] = token
                     tokenized_list.append(token)
                 elif i != '':
@@ -57,9 +56,9 @@ class TokenizerHandler:
     
     def _loadder(self, item):
         if ' ' in item:
-            return [self.memory.object_dict[i] for i in item.split(' ')]
+            return [self.memory.get_dict(i) for i in item.split(' ')]
         else:
-            return self.memory.object_dict[item]
+            return self.memory.get_dict(item)
     
     def load_token(self, item:str|list):
         if self.memory is not None:

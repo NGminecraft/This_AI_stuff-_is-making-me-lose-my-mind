@@ -66,8 +66,10 @@ class MemModel:
         print(b)
 
     def create_value(self, word:str, context:list|str) -> float:
-        if type(context) is str:
-            context = " ".split(context)
+        self.logger.log(logging.DEBUG, context)
+        if type(context) is str and " " in context:
+            context = context.split(" ")
+        self.logger.log(logging.DEBUG, context)
         inputWord = self.formatter.format(True, (1, 1, -1), word, length_override=20)
         inputSentence = self.formatter.format(False, (1, 1, -1), context)
         return self.model([inputWord, inputSentence], training=False)

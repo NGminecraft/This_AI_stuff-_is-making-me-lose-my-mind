@@ -66,8 +66,11 @@ logger.log(logging.WARNING, 'Initializing Warnings')
 logger.propagate = False
 
 loader = cls_loader(logger=logger, exceptions=exceptions, formatter=Formatter(logger=logger), file_save=file_save, saver=Save)
-reward_class = loader.load(Reward, loader=loader.load(file_loader), formatter=Formatter)
 
 memory_class = loader.load(Memory)
+
+loader.formatter = memory_class
+
+reward_class = loader.load(Reward, loader=loader.load(file_loader), formatter=Formatter)
 
 loader.begin_save()

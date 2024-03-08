@@ -32,6 +32,14 @@ class Memory:
     def _build_memory(self):
         self.object_dict = {}
         
+    def get_dict(self, key):
+        self.logger.log(logging.DEBUG, key)
+        if key in self.object_dict.keys():
+            return self.object_dict[key]
+        else:
+            self.logger.log(logging.INFO, f'Word {key} not found. Creating.')
+            self.new_word(key)
+        
     def new_word(self, word:list|str):
         if type(word) is list:
             for i in word:
