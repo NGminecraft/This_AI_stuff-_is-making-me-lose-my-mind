@@ -36,6 +36,7 @@ class TokenizerHandler:
             return pickle.load(file)
 
     def _create_token(self, item:list|str):
+        print('HELLO')
         if type(item) is str:
             item = [item]
         tokenized_list =  []
