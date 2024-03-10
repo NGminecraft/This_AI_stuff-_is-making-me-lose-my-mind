@@ -47,7 +47,7 @@ class TokenizerHandler:
                 continue
             for i in j.split(' '):
                 if i not in self.cache.keys() and i != '':
-                    token = self._loadder(i) # This is the thingy acually creating the token.
+                    token = self._loadder(i) # This is the thingy actually creating the token.
                     self.cache[i] = token
                     tokenized_list.append(token)
                 elif i != '':
