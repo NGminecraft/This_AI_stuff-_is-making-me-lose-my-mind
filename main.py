@@ -69,6 +69,8 @@ loader = cls_loader(logger=logger, exceptions=exceptions, formatter=Formatter(lo
 
 memory_class = loader.load(Memory)
 
+loader.formatter.tokenizer.memory = memory_class
+
 loader.formatter = memory_class
 
 reward_class = loader.load(Reward, loader=loader.load(file_loader), formatter=Formatter)

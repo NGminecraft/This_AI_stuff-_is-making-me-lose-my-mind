@@ -29,7 +29,9 @@ class MemModel:
             if self.should_log:
                 self.logger.log(logging.INFO, 'No model found, building a new one')
             self.first_build(path)
-        self.logger.log(logging.INFO, 'Loaded memory model, testing')
+            
+    def Test(self):
+        self.logger.log(logging.INFO, 'Testing Memory Model')
         self.create_value("TESTING", "This is a TESTING sentence")
         self.logger.log(logging.INFO, 'Testing Completed')
             
