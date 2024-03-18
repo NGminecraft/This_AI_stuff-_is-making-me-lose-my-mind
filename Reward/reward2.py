@@ -1,27 +1,17 @@
 import keras
-import pandas as pd
 import os
 
-import utils.inputs_preparation.formatter
-
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import tensorflow as tf
 import numpy as np
-from tqdm import tqdm
 import logging
-import copy
-import sys
-import matplotlib.pyplot as plt
-from random import uniform
 import keras_tuner as kt
-import inspect
 
 
 class Reward:
-    def __init__(self, loader, formatter, classes = 5, logger=None, build_model=True, exceptions=None):
+    def __init__(self, formatter, file_loader=None, classes = 5, logger=None, build_model=True, exceptions=None):
         self.num_classes = classes
         self.logger = logger
-        self.loader = loader
+        self.loader = file_loader
         all_training_text = self.loader.load_csv("Reward/Data/TrainingData/data_test.csv")["Text"].tolist()
         all_training_text.extend(self.loader.load_csv("Reward/Data/TrainingData/data_train.csv")["Text"].tolist())
         self.formatter = formatter
