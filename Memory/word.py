@@ -12,5 +12,5 @@ class Word:
     def get_dict(self):
         return self.val_dict
     
-    def __add__(self, object):
-        return self.number + object
+    def __add__(self, item):
+        return self.number + item

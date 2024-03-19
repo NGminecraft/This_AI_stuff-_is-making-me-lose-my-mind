@@ -1,29 +1,30 @@
 import pickle
-import logging
+from logging import INFO, WARN, ERROR
 import keras
 import pandas as pd
 import numpy as np
 import os
 
-class file_loader:
+class FileLoader:
     def __init__(self, logger=None):
-        if logger != None:
+        if logger is not None:
             self.logger = logger
             self.should_log = True
-            self.logger.log(logging.INFO, "Activated file loader's logger")
+            self.logger.log(INFO, "Activated file loader's logger")
         else:
             self.should_log = False
         self.cache = {}
     
     def load(self, path, cache_override=False):
         if path not in self.cache and not cache_override:
-            self.logger.log(logging.INFO, f'Loading file: {path}')
+            self.logger.log(INFO, f'Loading file: {path}')
             try:
                 with open(path, "rb") as file:
                     a= pickle.load(file)
                     self.cache[path] = a
                     return a
             except EOFError:
+                self.logger.log(WARN, f'Attempted to read file at {path}, but it was empty!')
                 return None
         else:
             return self.cache[path]
@@ -35,12 +36,12 @@ class file_loader:
             self.cache[csv] = pd.read_csv(csv)
             return self.cache[csv]
         
-    def load_model(self, dir):
+    def load_model(self, directory):
         try:
-            return keras.saving.load_model(dir)
+            return keras.saving.load_model(directory)
         except FileNotFoundError:
             if self.should_log:
-                self.logger.log(logging.ERROR, f'Attempted to load model from {dir}')
+                self.logger.log(ERROR, f'Attempted to load nonexistent model from {directory}')
             return None
     
     def load_numpy(self, npy):
@@ -49,9 +50,10 @@ class file_loader:
             return self.cache[npy]
         else:
             if self.should_log:
-                self.logger.log(logging.WARNING, f'Attempted to read an invalid npy file at {npy}')
+                self.logger.log(ERROR, f'Attempted to read an invalid npy file at {npy}')
             return None
-    
-    def exists(self, path):
+
+    @staticmethod
+    def exists(path):
         return os.path.exists(path)
     

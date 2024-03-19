@@ -3,35 +3,44 @@ import os
 import pickle
 import threading
 import logging
-from Memory.object_handler import Handler as oh
+from Memory.object_handler import Handler as Oh
 from Memory.memory_model import MemModel
+from Memory.category import Category
 
 class Memory:
     def __init__(self, exceptions, saver, logger = None, path="Memory/Data", should_log = True, module_loader = None, file_loader = None):
+        # Setting up utilities
+        # Loading save files
         if file_loader is not None:
             self.file_loader = file_loader
+        # Default Data Path
         self.path = path
+        # Exceptions
         if exceptions is not None:
             self.exceptions = exceptions
+        # Logging
         if logger is not None:
             self.logger = logger
             self.should_log = should_log
+        # Module for loading classes
+        if module_loader is not None:
+            self.module_loader = module_loader
+            self.model = module_loader.load(MemModel)
+        self.file_saver = saver
+        self._load_object_handler(path)
         model_file = f"{path}/Model/memory_model.keras"
+        # Memory model
         if file_loader.exists(model_file):
             self.memory_arr = file_loader.load(path + "/Model/memory_model.keras")
         else:
             self._load_object_handler(path)
+        # Loading the object handler
         if module_loader:
-            self.object_handler = module_loader.load(oh)
+            self.object_handler = module_loader.load(Oh)
         else:
-            self.object_handler = oh()
-        if module_loader is not None:
-            self.module_loader = module_loader
-            self.model = module_loader.load(MemModel)
+            self.object_handler = Oh()
         if self.should_log:
             self.logger.log(logging.INFO, 'Successfully loaded Memory')
-        self.file_saver = saver
-        self._load_object_handler(path)
                 
     def get_dict(self, key):
         self.logger.log(logging.DEBUG, key)
@@ -49,9 +58,9 @@ class Memory:
             for i in word:
                 self.object_dict[i] = self.model.create_value(i)
         elif type(word) is str:
-            self.object_dict[i] = self.model.create_value(i)
+            self.object_dict[word] = self.model.create_value(word)
             
-    def memory_call(self, category=None, prompt=None):
+    def memory_call(self, category=None, prompt=None, *args, **kwargs):
         if category is None and prompt is None:
             raise self.exceptions.NotEnoughArgs(1, 0, "Memory")
         elif category is not None and prompt is None:

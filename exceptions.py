@@ -1,3 +1,3 @@
 class NotEnoughArgs(Exception):
-    def __init__(self, expected, recieved, name):
-        super().__init__(f"{name} recived to few arguments. Expected {expected}, Recieved {recieved} arguments")
+    def __init__(self, expected, received, name):
+        super().__init__(f"{name} received to few arguments. Expected {expected}, Received {received} arguments")

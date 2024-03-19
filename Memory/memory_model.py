@@ -72,6 +72,6 @@ class MemModel:
         if type(context) is str and " " in context:
             context = context.split(" ")
         self.logger.log(logging.DEBUG, context)
-        inputWord = self.formatter.format(True, (1, 1, -1), word, length_override=20)
-        inputSentence = self.formatter.format(False, (1, 1, -1), context)
-        return self.model([inputWord, inputSentence], training=False)
+        input_word = self.formatter.format(True, (1, 1, -1), word, length_override=20)
+        input_sentence = self.formatter.format(False, (1, 1, -1), context)
+        return self.model([input_word, input_sentence], training=False)
