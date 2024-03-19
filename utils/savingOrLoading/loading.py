@@ -1,39 +1,57 @@
-import json
-import os
-import copy
+import pickle
 import logging
-import keras_tuner as kt
+import keras
+import pandas as pd
+import numpy as np
+import os
 
-class Loader:
-    def __init__(self, directory, objective='val_loss', logger = None):
-        self.directory = directory
-        self.objective = objective
-        self.logger = logger
-
-    def get_models(self, base_model=None, tuner_obj=None):
-        all_losses = {}
-        for subdir in os.listdir(self.directory):
-            subdir_path = os.path.join(self.directory, subdir)
-            if os.path.isdir(subdir_path):
-                with open(os.path.join(subdir_path, 'trial.json'), 'r') as f:
-                    data = json.load(f)
-                    all_losses[data['score']] = os.path.join(subdir_path, 'trial.json')
-
-        losses = copy.deepcopy(all_losses)
-        for i in all_losses.keys():
-            if i is None or i < 0:
-                del losses[i]
-        keys = sorted(losses.keys())
-
-        if not self.logger is None:
-            self.logger.log(logging.INFO, f'Best loss is {keys[0]} from {losses[keys[0]].split("/")[-2]}')
+class file_loader:
+    def __init__(self, logger=None):
+        if logger != None:
+            self.logger = logger
+            self.should_log = True
+            self.logger.log(logging.INFO, "Activated file loader's logger")
         else:
-            print(f'Best loss is {keys[0]} from {losses[keys[0]].split("/")[-2]}')
-
-        if not tuner_obj is None:
-            b = tuner_obj.load_model("/".join([losses[keys[0]].split("/")[0:-1], "checkpoint"]))
-            print(b)
-
-if __name__ == '__main__':
-    loader = Loader(directory='Reward/Data/Models/Training attempt 2')
-    loader.get_models()
+            self.should_log = False
+        self.cache = {}
+    
+    def load(self, path, cache_override=False):
+        if path not in self.cache and not cache_override:
+            self.logger.log(logging.INFO, f'Loading file: {path}')
+            try:
+                with open(path, "rb") as file:
+                    a= pickle.load(file)
+                    self.cache[path] = a
+                    return a
+            except EOFError:
+                return None
+        else:
+            return self.cache[path]
+    
+    def load_csv(self, csv):
+        if csv in self.cache:
+            return self.cache[csv]
+        else:
+            self.cache[csv] = pd.read_csv(csv)
+            return self.cache[csv]
+        
+    def load_model(self, dir):
+        try:
+            return keras.saving.load_model(dir)
+        except FileNotFoundError:
+            if self.should_log:
+                self.logger.log(logging.ERROR, f'Attempted to load model from {dir}')
+            return None
+    
+    def load_numpy(self, npy):
+        if npy[-3:] == 'npy':
+            self.cache[npy] = np.load(npy)
+            return self.cache[npy]
+        else:
+            if self.should_log:
+                self.logger.log(logging.WARNING, f'Attempted to read an invalid npy file at {npy}')
+            return None
+    
+    def exists(self, path):
+        return os.path.exists(path)
+    

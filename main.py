@@ -2,12 +2,11 @@ from Reward.reward2 import Reward
 import logging
 import sys
 import os
-from utils.inputs_preparation.loader import Loader as file_loader
+from utils.savingOrLoading.loading import file_loader as file_loader
 from utils.inputs_preparation.formatter import Formatter
-from class_loader import Loader as cls_loader
+from class_loader import CLS_Loader as cls_loader
 from Memory.memory import Memory
 import exceptions
-from saving import Save
 from utils.savingOrLoading.saving import Save as file_save
 
 try:
@@ -65,12 +64,14 @@ logger.log(logging.INFO, 'Initializing')
 logger.log(logging.WARNING, 'Initializing Warnings')
 logger.propagate = False
 
-loader = cls_loader(logger=logger, exceptions=exceptions, formatter=Formatter(logger=logger), file_save=file_save, saver=Save)
+loader = cls_loader(logger=logger, exceptions=exceptions, formatter=Formatter(logger=logger), file_save=file_save, file_load=file_loader)
 
 memory_class = loader.load(Memory)
 
+loader.formatter.tokenizer.memory = memory_class
+
 loader.formatter = memory_class
 
-reward_class = loader.load(Reward, loader=loader.load(file_loader), formatter=Formatter)
+reward_class = loader.load(Reward, formatter=Formatter)
 
 loader.begin_save()
