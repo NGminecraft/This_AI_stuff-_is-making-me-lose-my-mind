@@ -6,6 +6,7 @@ import logging
 from Memory.object_handler import Handler as Oh
 from Memory.memory_model import MemModel
 from Memory.category import Category
+from Memory.object import MemoryObject
 
 class Memory:
     def __init__(self, exceptions, saver, logger = None, path="Memory/Data", should_log = True, module_loader = None, file_loader = None):
@@ -35,6 +36,7 @@ class Memory:
         else:
             self._load_object_handler(path)
         # Loading the object handler
+        self.all_objects = {}
         if module_loader:
             self.object_handler = module_loader.load(Oh)
         else:
@@ -53,12 +55,32 @@ class Memory:
     def Test(self):
         self.model.Test()
         
-    def _new_word(self, word:list|str):
+    def _new_words_dict(self, word:list, category:dict):
+        for i in word:
+            pass
+    
+    def _new_words_str(self, word:list, category:str):
+        pass
+    
+    def _new_words_cat(self, word:list, category:Category):
+        for i in word:
+            self.all_objects[i] = MemoryObject(i, category=category)
+        
+    def _new_word(self, word:list|str, category:str|Category|list|dict=None, splitsentence=True):
         if type(word) is list:
             for i in word:
-                self.object_dict[i] = self.model.create_value(i)
+                self._new_word(i, category, splitsentence)
         elif type(word) is str:
-            self.object_dict[word] = self.model.create_value(word)
+            if ' ' in word and splitsentence:
+                word = word.split(None)
+        if type(word) is str:
+            word = [word]
+        if type(category) is str:
+            self._new_words_str(word, category)
+        elif type(category) is Category:
+            self.new_words_cat(word, category)
+        elif type(category) is dict:
+            self._new_words_dict(word, category)
             
     def memory_call(self, category=None, prompt=None, *args, **kwargs):
         if category is None and prompt is None:
