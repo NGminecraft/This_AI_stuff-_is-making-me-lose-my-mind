@@ -87,11 +87,12 @@ class Memory:
             raise self.exceptions.NotEnoughArgs(1, 0, "Memory")
         elif category is not None and prompt is None:
             if category in self.category_dict:
-                pass
+                return self.category_dict[category].category_call()
             else:
+                self.logger.log(logging.ERROR, f'Attempted to accses an invalid category {category}')
                 return None
         elif category is None and prompt is not None:
-            pass
+            return [i.search_category(prompt=prompt) for i in self.category_dict.values() if i.search_category(prompt=prompt) is not None]
         else:
             pass
         
@@ -113,6 +114,16 @@ class Memory:
             self.object_dict = {}
             self.category_dict = {}
             
+    def _load_object_categories(self):
+        loc = self.path+"/Data/categories.pickle"
+        if os.path.exists(loc):
+            self.category_dict = self.file_loader.load(loc)
+        else:
+            self.category_dict = {}
+            for i in ["phonetics", "ideas", "past_prompts"]: # These are all the categories for memory
+                self.category_dict[i] = self.module_loader.load(Category, id_name=i)
+            
     def save(self, saver):
         saver.save_other(self.object_dict, self.path+"/Data/object_dict.pickle")
+        saver.save_other(self.category_dict, self.path+"Data/categories.pickle")
         saver.save_model(self.model, self.path+"/Model/memory_model.keras", 'memory model')
