@@ -9,7 +9,7 @@ from Memory.category import Category
 from Memory.object import MemoryObject
 
 class Memory:
-    def __init__(self, exceptions, saver, logger = None, path="Memory/Data", should_log = True, module_loader = None, file_loader = None):
+    def __init__(self, formatter, exceptions, saver, logger=None, path="Memory/Data", should_log = True, module_loader = None, file_loader=None):
         # Setting up utilities
         # Loading save files
         if file_loader is not None:
@@ -23,6 +23,7 @@ class Memory:
         if logger is not None:
             self.logger = logger
             self.should_log = should_log
+        self.formatter = formatter
         # Module for loading classes
         if module_loader is not None:
             self.module_loader = module_loader
@@ -82,17 +83,17 @@ class Memory:
         elif type(category) is dict:
             self._new_words_dict(word, category)
             
-    def memory_call(self, category=None, prompt=None, *args, **kwargs):
+    def memory_call(self, category=None, prompt=None, max_length=50, *args, **kwargs):
         if category is None and prompt is None:
             raise self.exceptions.NotEnoughArgs(1, 0, "Memory")
         elif category is not None and prompt is None:
             if category in self.category_dict:
-                return self.category_dict[category].category_call()
+                return self.formatter.padder.pad(self.category_dict[category].category_call(), max_length)
             else:
                 self.logger.log(logging.ERROR, f'Attempted to accses an invalid category {category}')
                 return None
         elif category is None and prompt is not None:
-            return [i.search_category(prompt=prompt) for i in self.category_dict.values() if i.search_category(prompt=prompt) is not None]
+            return self.formatter.padder.pad([i.search_category(prompt=prompt) for i in self.category_dict.values() if i.search_category(prompt=prompt) is not None], max_length)
         else:
             pass
         
