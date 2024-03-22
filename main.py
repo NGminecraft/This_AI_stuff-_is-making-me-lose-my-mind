@@ -2,7 +2,7 @@ from Reward.reward2 import Reward
 import logging
 import sys
 import os
-from utils.savingOrLoading.loading import file_loader as file_loader
+from utils.savingOrLoading.loading import FileLoader as file_loader
 from utils.inputs_preparation.formatter import Formatter
 from utils.savingOrLoading.cls_loader import CLS_Loader as cls_loader
 from Memory.memory import Memory

@@ -105,7 +105,7 @@ class Memory:
                 self.object_dict = {}
             else:
                 self.object_dict = item
-            item1 = self.file_loader(loc)
+            item1 = self.file_loader.load(loc)
             if item1 is None:
                 self.category_dict = {}
             else:
@@ -126,5 +126,5 @@ class Memory:
             
     def save(self, saver):
         saver.save_other(self.object_dict, self.path+"/Data/object_dict.pickle")
-        saver.save_other(self.category_dict, self.path+"Data/categories.pickle")
+        saver.save_other(self.category_dict, self.path+"/Data/categories.pickle")
         saver.save_model(self.model, self.path+"/Model/memory_model.keras", 'memory model')

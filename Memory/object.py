@@ -22,7 +22,7 @@ class MemoryObject:
                 self.category.add_item(self)
             self.category.add_item(name, weight)
 
-    def get_word(self, expression:function=None) -> str|bool:
+    def get_word(self, expression=None) -> str|bool:
         if expression is None:
             return self.name
         else:

@@ -20,4 +20,4 @@ class memory_layer(keras.layers.Layer):
     
     def call(self, inputs):
         for i in range(inputs.shape[-1]):
-            
+            print(i)
