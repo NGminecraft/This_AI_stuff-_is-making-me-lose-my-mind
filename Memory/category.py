@@ -44,12 +44,12 @@ class Category:
 
     def update_category(self, threshold=1):
         """Removes any numbers that are too low"""
-        soreted_dict = dict(sorted(self.objects.items(), key=lambda x: [1], reverse=True))
+        sorted_dict = dict(sorted(self.objects.items(), key=lambda x: [1], reverse=True))
         current = 0
         while current < threshold:
-            if soreted_dict[soreted_dict.keys()[-1]] < threshold:
-                current = soreted_dict[soreted_dict.keys()[-1]]
-                del soreted_dict[soreted_dict.keys()[-1]]
+            if sorted_dict[sorted_dict.keys()[-1]] < threshold:
+                current = sorted_dict[sorted_dict.keys()[-1]]
+                del sorted_dict[sorted_dict.keys()[-1]]
             else:
                 break
                 
