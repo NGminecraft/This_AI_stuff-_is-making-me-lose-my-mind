@@ -1,5 +1,1 @@
-2024-03-22 14:26:42,763 - MainLogger - WARNING - Initializing Warnings
-2024-03-22 14:26:47,388 - MainLogger - WARNING - Object FileLoader has no method save()
-2024-03-22 14:26:47,390 - MainLogger - WARNING - Object CLS_Loader has no method save()
-2024-03-22 14:26:47,390 - MainLogger - WARNING - Object MemModel has no method save()
-2024-03-22 14:26:47,391 - MainLogger - WARNING - Object Handler has no method save()
+2024-03-22 15:25:45,079 - MainLogger - WARNING - Initializing Warnings

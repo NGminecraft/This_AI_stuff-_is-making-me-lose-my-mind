@@ -1,55 +1,48 @@
-2024-03-22 14:26:42,762 - MainLogger - INFO - Initializing
-2024-03-22 14:26:42,763 - MainLogger - WARNING - Initializing Warnings
-2024-03-22 14:26:42,763 - MainLogger - INFO - Activated file loader's logger
-2024-03-22 14:26:42,763 - MainLogger - INFO - loaded object FileLoader
-2024-03-22 14:26:42,763 - MainLogger - INFO - loaded object CLS_Loader
-2024-03-22 14:26:43,288 - MainLogger - INFO - Found model, loading
-2024-03-22 14:26:43,289 - MainLogger - INFO - 
-2024-03-22 14:26:43,289 - MainLogger - INFO - Model: "model"
-2024-03-22 14:26:43,290 - MainLogger - INFO - __________________________________________________________________________________________________
-2024-03-22 14:26:43,290 - MainLogger - INFO -  Layer (type)                Output Shape                 Param #   Connected to                  
-2024-03-22 14:26:43,290 - MainLogger - INFO - ==================================================================================================
-2024-03-22 14:26:43,290 - MainLogger - INFO -  input_1 (InputLayer)        [(None, None, 20)]           0         []                            
-2024-03-22 14:26:43,291 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,291 - MainLogger - INFO -  input_2 (InputLayer)        [(None, None, 500)]          0         []                            
-2024-03-22 14:26:43,291 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,292 - MainLogger - INFO -  masking (Masking)           (None, None, 20)             0         ['input_1[0][0]']             
-2024-03-22 14:26:43,292 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,292 - MainLogger - INFO -  masking_1 (Masking)         (None, None, 500)            0         ['input_2[0][0]']             
-2024-03-22 14:26:43,292 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,293 - MainLogger - INFO -  reshape (Reshape)           (None, 1, 20)                0         ['masking[0][0]']             
-2024-03-22 14:26:43,293 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,293 - MainLogger - INFO -  reshape_1 (Reshape)         (None, 1, 500)               0         ['masking_1[0][0]']           
-2024-03-22 14:26:43,293 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,294 - MainLogger - INFO -  lstm (LSTM)                 (None, 1, 20)                3280      ['reshape[0][0]']             
-2024-03-22 14:26:43,294 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,294 - MainLogger - INFO -  lstm_1 (LSTM)               (None, 1, 20)                41680     ['reshape_1[0][0]']           
-2024-03-22 14:26:43,295 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,295 - MainLogger - INFO -  add (Add)                   (None, 1, 20)                0         ['lstm[0][0]',                
-2024-03-22 14:26:43,295 - MainLogger - INFO -                                                                      'lstm_1[0][0]']              
-2024-03-22 14:26:43,295 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,296 - MainLogger - INFO -  dense (Dense)               (None, 1, 20)                420       ['add[0][0]']                 
-2024-03-22 14:26:43,296 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,296 - MainLogger - INFO -  dense_1 (Dense)             (None, 1, 10)                210       ['dense[0][0]']               
-2024-03-22 14:26:43,296 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,297 - MainLogger - INFO -  dense_2 (Dense)             (None, 1, 1)                 11        ['dense_1[0][0]']             
-2024-03-22 14:26:43,297 - MainLogger - INFO -                                                                                                   
-2024-03-22 14:26:43,297 - MainLogger - INFO - ==================================================================================================
-2024-03-22 14:26:43,298 - MainLogger - INFO - Total params: 45601 (178.13 KB)
-2024-03-22 14:26:43,299 - MainLogger - INFO - Trainable params: 45601 (178.13 KB)
-2024-03-22 14:26:43,299 - MainLogger - INFO - Non-trainable params: 0 (0.00 Byte)
-2024-03-22 14:26:43,299 - MainLogger - INFO - __________________________________________________________________________________________________
-2024-03-22 14:26:43,299 - MainLogger - INFO - 
-2024-03-22 14:26:43,299 - MainLogger - INFO - loaded object MemModel
-2024-03-22 14:26:43,300 - MainLogger - INFO - Loading file: Memory/Data/Data/object_dict.pickle
-2024-03-22 14:26:43,300 - MainLogger - INFO - Loaded Object Handler Successfully
-2024-03-22 14:26:43,300 - MainLogger - INFO - loaded object Handler
-2024-03-22 14:26:43,301 - MainLogger - INFO - Successfully loaded Memory
-2024-03-22 14:26:43,301 - MainLogger - INFO - loaded object Memory
-2024-03-22 14:26:47,387 - MainLogger - INFO - Initialized reward Successfully
-2024-03-22 14:26:47,387 - MainLogger - INFO - loaded object Reward
-2024-03-22 14:26:47,388 - MainLogger - INFO - Request recieved to save
-2024-03-22 14:26:47,388 - MainLogger - WARNING - Object FileLoader has no method save()
-2024-03-22 14:26:47,390 - MainLogger - WARNING - Object CLS_Loader has no method save()
-2024-03-22 14:26:47,390 - MainLogger - WARNING - Object MemModel has no method save()
-2024-03-22 14:26:47,391 - MainLogger - WARNING - Object Handler has no method save()
+2024-03-22 15:25:45,078 - MainLogger - INFO - Initializing
+2024-03-22 15:25:45,079 - MainLogger - WARNING - Initializing Warnings
+2024-03-22 15:25:45,079 - MainLogger - INFO - Activated file loader's logger
+2024-03-22 15:25:45,079 - MainLogger - INFO - loaded object FileLoader
+2024-03-22 15:25:45,079 - MainLogger - INFO - loaded object CLS_Loader
+2024-03-22 15:25:45,599 - MainLogger - INFO - Found model, loading
+2024-03-22 15:25:45,599 - MainLogger - INFO - 
+2024-03-22 15:25:45,599 - MainLogger - INFO - Model: "model"
+2024-03-22 15:25:45,599 - MainLogger - INFO - __________________________________________________________________________________________________
+2024-03-22 15:25:45,599 - MainLogger - INFO -  Layer (type)                Output Shape                 Param #   Connected to                  
+2024-03-22 15:25:45,600 - MainLogger - INFO - ==================================================================================================
+2024-03-22 15:25:45,600 - MainLogger - INFO -  input_1 (InputLayer)        [(None, None, 20)]           0         []                            
+2024-03-22 15:25:45,600 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,601 - MainLogger - INFO -  input_2 (InputLayer)        [(None, None, 500)]          0         []                            
+2024-03-22 15:25:45,601 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,601 - MainLogger - INFO -  masking (Masking)           (None, None, 20)             0         ['input_1[0][0]']             
+2024-03-22 15:25:45,601 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,601 - MainLogger - INFO -  masking_1 (Masking)         (None, None, 500)            0         ['input_2[0][0]']             
+2024-03-22 15:25:45,602 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,602 - MainLogger - INFO -  reshape (Reshape)           (None, 1, 20)                0         ['masking[0][0]']             
+2024-03-22 15:25:45,602 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,602 - MainLogger - INFO -  reshape_1 (Reshape)         (None, 1, 500)               0         ['masking_1[0][0]']           
+2024-03-22 15:25:45,602 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,603 - MainLogger - INFO -  lstm (LSTM)                 (None, 1, 20)                3280      ['reshape[0][0]']             
+2024-03-22 15:25:45,603 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,604 - MainLogger - INFO -  lstm_1 (LSTM)               (None, 1, 20)                41680     ['reshape_1[0][0]']           
+2024-03-22 15:25:45,604 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,604 - MainLogger - INFO -  add (Add)                   (None, 1, 20)                0         ['lstm[0][0]',                
+2024-03-22 15:25:45,604 - MainLogger - INFO -                                                                      'lstm_1[0][0]']              
+2024-03-22 15:25:45,604 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,605 - MainLogger - INFO -  dense (Dense)               (None, 1, 20)                420       ['add[0][0]']                 
+2024-03-22 15:25:45,605 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,605 - MainLogger - INFO -  dense_1 (Dense)             (None, 1, 10)                210       ['dense[0][0]']               
+2024-03-22 15:25:45,605 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,606 - MainLogger - INFO -  dense_2 (Dense)             (None, 1, 1)                 11        ['dense_1[0][0]']             
+2024-03-22 15:25:45,606 - MainLogger - INFO -                                                                                                   
+2024-03-22 15:25:45,606 - MainLogger - INFO - ==================================================================================================
+2024-03-22 15:25:45,607 - MainLogger - INFO - Total params: 45601 (178.13 KB)
+2024-03-22 15:25:45,607 - MainLogger - INFO - Trainable params: 45601 (178.13 KB)
+2024-03-22 15:25:45,608 - MainLogger - INFO - Non-trainable params: 0 (0.00 Byte)
+2024-03-22 15:25:45,608 - MainLogger - INFO - __________________________________________________________________________________________________
+2024-03-22 15:25:45,608 - MainLogger - INFO - 
+2024-03-22 15:25:45,608 - MainLogger - INFO - loaded object MemModel
+2024-03-22 15:25:45,608 - MainLogger - INFO - Loading file: Memory/Data/Data/object_dict.pickle
+2024-03-22 15:25:45,609 - MainLogger - INFO - Loaded Object Handler Successfully
+2024-03-22 15:25:45,609 - MainLogger - INFO - loaded object Handler
+2024-03-22 15:25:45,609 - MainLogger - INFO - Successfully loaded Memory
+2024-03-22 15:25:45,609 - MainLogger - INFO - loaded object Memory
