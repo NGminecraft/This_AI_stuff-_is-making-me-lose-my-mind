@@ -27,7 +27,7 @@ class Memory:
         # Module for loading classes
         if module_loader is not None:
             self.module_loader = module_loader
-            self.model = module_loader.load(MemModel)
+#            self.model = module_loader.load(MemModel)
         self.file_saver = saver
         self._load_object_handler(path)
         model_file = f"{path}/Model/memory_model.keras"

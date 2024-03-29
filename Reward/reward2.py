@@ -128,7 +128,7 @@ class Reward:
                 keras.saving.save_model(model, 'Reward/Data/Models/RewardModel')
                 return model, True
             else:
-                self.logger.log(logging.INFO, "No model found, creating one")
+                self.logger.log(logging.INFO, "No reward model found, creating one")
                 return None, False
 
         

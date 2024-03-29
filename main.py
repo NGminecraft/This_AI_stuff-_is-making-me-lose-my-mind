@@ -1,13 +1,15 @@
 from Reward.reward2 import Reward
 import logging
 import sys
+import exceptions
 import os
 from utils.savingOrLoading.loading import FileLoader as file_loader
 from utils.inputs_preparation.formatter import Formatter
+from utils.savingOrLoading.saving import Save as file_save
 from utils.savingOrLoading.cls_loader import CLS_Loader as cls_loader
 from Memory.memory import Memory
-import exceptions
-from utils.savingOrLoading.saving import Save as file_save
+from Cognition.maincogntion import Cognition
+
 
 try:
     with open("logs/Info.log", 'r') as log:
@@ -73,5 +75,7 @@ loader.formatter.tokenizer.memory = memory_class
 loader.formatter = memory_class
 
 reward_class = loader.load(Reward, formatter=Formatter)
+
+cognition_class = loader.load(Cognition)
 
 loader.begin_save()

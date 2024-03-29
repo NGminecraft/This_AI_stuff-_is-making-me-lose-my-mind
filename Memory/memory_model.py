@@ -21,7 +21,7 @@ class MemModel:
         if os.path.exists(path+"/memory_model.keras"):
             self.model = keras.saving.load_model(path+"/memory_model.keras")
             if self.should_log:
-                self.logger.log(logging.INFO, 'Found model, loading')
+                self.logger.log(logging.INFO, 'Found Memory model, loading')
                 self.logger.log(logging.INFO, '')
                 self.model.summary(print_fn=self.logger.info)
                 self.logger.log(logging.INFO, '')

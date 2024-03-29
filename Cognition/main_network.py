@@ -1,5 +1,7 @@
 from Cognition.memory_calling_layer import memory_layer
 import keras
+import os
+from logging import INFO
 
 
 class main_network:
@@ -9,10 +11,9 @@ class main_network:
         self.exceptions = exceptions
         self.should_exceptions = bool(exceptions)
         self.path = path
+        self.model = model
         if model is not None:
-            self.model = model
-        else:
-            self.model = self._create_model()
+            self.init_main_network()
             
     @staticmethod
     def _generalization_layer(input_layer, size:int=50, **kwargs):
@@ -50,7 +51,7 @@ class main_network:
         sentecne_memory = keras.layers.Input(shape=(500,), name="Sentence memory")
         previous_output = keras.layers.Input(shape=(100), name='Previous output')
         
-        all_layers = keras.layers.concatenate(axis=1)([sentence_input, sentecne_memory, previous_output])
+        all_layers = keras.layers.Concatenate()([sentence_input, sentecne_memory, previous_output])
         
         # Generalization side
         generalized = self._generalization_layer(all_layers)
@@ -65,17 +66,34 @@ class main_network:
         
         expanded_generalized = self._generalization_layer(expanded)
         
-        x = [generalized, generalized_expanded, expanded, expanded_generalized]
+        x = keras.layers.Concatenate()([generalized, generalized_expanded, expanded, expanded_generalized])
         # Large Model
         for i in range(9):
-            x = keras.layers.Dense(1000-i*100)(x)
-        x = keras.layers.Dense(175)(x)
-        x = keras.layers.Dense(150)(x)
-        x = keras.layers.Dense(140)(x)
-        x = keras.layers.Dense(130)(x)
-        x = keras.layers.Dense(120)(x)
-        x = keras.layers.Dense(110)(x)
-        x = keras.layers.Dense(100)(x)
+            x = keras.layers.Dense(1000-i*100, 'relu')(x)
+        x = keras.layers.Dense(175, 'relu')(x)
+        x = keras.layers.Dense(150, 'relu')(x)
+        x = keras.layers.Dense(140, 'relu')(x)
+        x = keras.layers.Dense(130, 'relu')(x)
+        x = keras.layers.Dense(120, 'relu')(x)
+        x = keras.layers.Dense(110, 'relu')(x)
+        x = keras.layers.Dense(100, 'relu')(x)
         self.model = keras.Model(inputs=[sentence_input, sentecne_memory, previous_output], outputs=x)
+        self.logger.log(INFO, 'Succsefully created the Main Cognition model')
         return self.model
-        
+    
+    def init_main_network(self, path="Cognition/Data/main_network.keras"):
+        if os.path.exists(path) and self.model is None:
+            self.logger.log(INFO, 'Cognition model found. Loading.')
+            self.model = keras.saving.load_model(path)
+        elif self.model is not None:
+            return self.model
+        else:
+            self.logger.log(INFO, "No model found for the main cognition layer. Rebuilding.")
+            self._create_model()
+            self.save_model(path)
+        self.model.summary(print_fn=self.logger.info)
+        return self.model
+    
+    def save_model(self, path):
+        self.logger.log(INFO, f'Saving main cognition model to {path}')
+        self.model.save(path)
