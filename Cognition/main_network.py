@@ -21,9 +21,16 @@ class main_network:
         for i in range(size//5):
             input_layer = keras.layers.Dense(max(i*5, size*0.2), **kwargs)(input_layer)
         return input_layer
+    
+    @staticmethod
+    def _expansion_layer(input_layer, size:int=100, **kwargs):
+        for i in range(size//5):
+            input_layer = keras.layers.Dense(size+i*5, **kwargs)(input_layer)
+        for i in range(size//5):
+            input_layer = keras.layers.Dense(size*2-i*5, **kwargs)(input_layer)
+        return input_layer
             
-            
-    def _create_model(self):
+    def _create_model(self) -> keras.Model:
         """ Heres the way this thing should work:
         First we take in the input and original strong associtions with it
         We then split the input into two and pass it into two submodels.
@@ -36,9 +43,39 @@ class main_network:
         The outputs are then split into two sections, one that gets sent to one last smaller neural network then outputed
         The other one goes into the network again for the next iteration
         20 outputs should be designated for the output of the model
-        100 outputs are sent to the next iteration of the network
+        100 outputs are sent to the next iteration of the 
+        Or maybe pass it all into a speaking function?
         """
         sentence_input = keras.layers.Input(shape=(500,), name="Sentece Input")
         sentecne_memory = keras.layers.Input(shape=(500,), name="Sentence memory")
-        previous_output = keras.layers.Input(shape=(120), name='Previous output')
+        previous_output = keras.layers.Input(shape=(100), name='Previous output')
+        
+        all_layers = keras.layers.concatenate(axis=1)([sentence_input, sentecne_memory, previous_output])
+        
+        # Generalization side
+        generalized = self._generalization_layer(all_layers)
+        
+        # Generalized and Expanded
+        generalized_expanded = self._expansion_layer(generalized)
+        
+        # Expansion Side
+        expanded = self._expansion_layer(all_layers)
+        
+        # Expanded and generalized
+        
+        expanded_generalized = self._generalization_layer(expanded)
+        
+        x = [generalized, generalized_expanded, expanded, expanded_generalized]
+        # Large Model
+        for i in range(9):
+            x = keras.layers.Dense(1000-i*100)(x)
+        x = keras.layers.Dense(175)(x)
+        x = keras.layers.Dense(150)(x)
+        x = keras.layers.Dense(140)(x)
+        x = keras.layers.Dense(130)(x)
+        x = keras.layers.Dense(120)(x)
+        x = keras.layers.Dense(110)(x)
+        x = keras.layers.Dense(100)(x)
+        self.model = keras.Model(inputs=[sentence_input, sentecne_memory, previous_output], outputs=x)
+        return self.model
         
