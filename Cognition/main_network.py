@@ -1,4 +1,5 @@
 from Cognition.memory_calling_layer import memory_layer
+import keras
 
 
 class main_network:
@@ -13,6 +14,15 @@ class main_network:
         else:
             self.model = self._create_model()
             
+    @staticmethod
+    def _generalization_layer(input_layer, size:int=50, **kwargs):
+        for i in range(size//5):
+            input_layer = keras.layers.Dense(max(size-i*5, size*0.2), **kwargs)(input_layer)
+        for i in range(size//5):
+            input_layer = keras.layers.Dense(max(i*5, size*0.2), **kwargs)(input_layer)
+        return input_layer
+            
+            
     def _create_model(self):
         """ Heres the way this thing should work:
         First we take in the input and original strong associtions with it
@@ -25,4 +35,10 @@ class main_network:
         The dense newtwork is several layers of alternating sizes to run through the data and its memory
         The outputs are then split into two sections, one that gets sent to one last smaller neural network then outputed
         The other one goes into the network again for the next iteration
+        20 outputs should be designated for the output of the model
+        100 outputs are sent to the next iteration of the network
         """
+        sentence_input = keras.layers.Input(shape=(500,), name="Sentece Input")
+        sentecne_memory = keras.layers.Input(shape=(500,), name="Sentence memory")
+        previous_output = keras.layers.Input(shape=(120), name='Previous output')
+        
