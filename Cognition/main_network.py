@@ -1,7 +1,7 @@
 from Cognition.memory_calling_layer import memory_layer
 import keras
 import os
-from logging import INFO
+from logging import INFO, DEBUG
 
 
 class main_network:
@@ -17,17 +17,17 @@ class main_network:
             
     @staticmethod
     def _generalization_layer(input_layer, size:int=50, **kwargs):
-        for i in range(size//5):
+        for i in range(size//5-2):
             input_layer = keras.layers.Dense(max(size-i*5, size*0.2), **kwargs)(input_layer)
-        for i in range(size//5):
+        for i in range(size//5-2):
             input_layer = keras.layers.Dense(max(i*5, size*0.2), **kwargs)(input_layer)
         return input_layer
     
     @staticmethod
     def _expansion_layer(input_layer, size:int=100, **kwargs):
-        for i in range(size//5):
+        for i in range(size//5-2):
             input_layer = keras.layers.Dense(size+i*5, **kwargs)(input_layer)
-        for i in range(size//5):
+        for i in range(size//5-2):
             input_layer = keras.layers.Dense(size*2-i*5, **kwargs)(input_layer)
         return input_layer
             
@@ -81,7 +81,7 @@ class main_network:
         self.logger.log(INFO, 'Succsefully created the Main Cognition model')
         return self.model
     
-    def init_main_network(self, path="Cognition/Data/main_network.keras"):
+    def init_main_network(self, path="Cognition/Data/Model/main_model.keras"):
         if os.path.exists(path) and self.model is None:
             self.logger.log(INFO, 'Cognition model found. Loading.')
             self.model = keras.saving.load_model(path)

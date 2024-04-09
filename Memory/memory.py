@@ -121,7 +121,7 @@ class Memory:
             self.category_dict = self.file_loader.load(loc)
         else:
             self.category_dict = {}
-            for i in ["phonetics", "ideas", "past_prompts"]: # These are all the categories for memory
+            for i in ["phonetics", "ideas", "past_prompts", "words"]: # These are all the categories for memory
                 self.category_dict[i] = self.module_loader.load(Category, id_name=i)
             
     def save(self, saver):

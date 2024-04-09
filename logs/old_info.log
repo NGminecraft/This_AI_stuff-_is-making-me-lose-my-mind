@@ -1,23 +1,321 @@
-2024-03-29 15:32:02,871 - MainLogger - INFO - Initializing
-2024-03-29 15:32:02,872 - MainLogger - WARNING - Initializing Warnings
-2024-03-29 15:32:02,872 - MainLogger - INFO - Activated file loader's logger
-2024-03-29 15:32:02,872 - MainLogger - INFO - loaded object FileLoader
-2024-03-29 15:32:02,872 - MainLogger - INFO - loaded object CLS_Loader
-2024-03-29 15:32:02,873 - MainLogger - INFO - Loading file: Memory/Data/Data/object_dict.pickle
-2024-03-29 15:32:02,873 - MainLogger - INFO - Loaded Object Handler Successfully
-2024-03-29 15:32:02,873 - MainLogger - INFO - loaded object Handler
-2024-03-29 15:32:02,873 - MainLogger - INFO - Successfully loaded Memory
-2024-03-29 15:32:02,874 - MainLogger - INFO - loaded object Memory
-2024-03-29 15:32:06,289 - MainLogger - INFO - Initialized reward Successfully
-2024-03-29 15:32:06,290 - MainLogger - INFO - loaded object Reward
-2024-03-29 15:32:06,291 - MainLogger - INFO - loaded object main_network
-2024-03-29 15:32:06,292 - MainLogger - INFO - Cognition model found. Loading.
-2024-03-29 15:32:09,765 - MainLogger - INFO - loaded object Cognition
-2024-03-29 15:32:09,766 - MainLogger - INFO - Request recieved to save
-2024-03-29 15:32:09,766 - MainLogger - WARNING - Object FileLoader has no method save()
-2024-03-29 15:32:09,766 - MainLogger - WARNING - Object CLS_Loader has no method save()
-2024-03-29 15:32:09,766 - MainLogger - WARNING - Object Handler has no method save()
-2024-03-29 15:32:09,767 - MainLogger - WARNING - Object Memory has no method save()
-2024-03-29 15:32:09,767 - MainLogger - WARNING - Object Reward has no method save()
-2024-03-29 15:32:09,768 - MainLogger - WARNING - Object main_network has no method save()
-2024-03-29 15:32:09,768 - MainLogger - WARNING - Object Cognition has no method save()
+2024-04-09 13:53:11,577 - MainLogger - INFO - Initializing
+2024-04-09 13:53:11,577 - MainLogger - WARNING - Initializing Warnings
+2024-04-09 13:53:11,578 - MainLogger - INFO - Activated file loader's logger
+2024-04-09 13:53:11,578 - MainLogger - INFO - loaded object FileLoader
+2024-04-09 13:53:11,578 - MainLogger - INFO - loaded object CLS_Loader
+2024-04-09 13:53:11,578 - MainLogger - INFO - Loading file: Memory/Data/Data/object_dict.pickle
+2024-04-09 13:53:11,579 - MainLogger - INFO - Loaded Object Handler Successfully
+2024-04-09 13:53:11,579 - MainLogger - INFO - loaded object Handler
+2024-04-09 13:53:11,579 - MainLogger - INFO - Successfully loaded Memory
+2024-04-09 13:53:11,579 - MainLogger - INFO - loaded object Memory
+2024-04-09 13:53:15,936 - MainLogger - INFO - Initialized reward Successfully
+2024-04-09 13:53:15,936 - MainLogger - INFO - loaded object Reward
+2024-04-09 13:53:15,937 - MainLogger - INFO - loaded object main_network
+2024-04-09 13:53:15,938 - MainLogger - INFO - Cognition model found. Loading.
+2024-04-09 13:53:19,618 - MainLogger - INFO - Model: "model"
+2024-04-09 13:53:19,619 - MainLogger - INFO - __________________________________________________________________________________________________
+2024-04-09 13:53:19,619 - MainLogger - INFO -  Layer (type)                Output Shape                 Param #   Connected to                  
+2024-04-09 13:53:19,619 - MainLogger - INFO - ==================================================================================================
+2024-04-09 13:53:19,620 - MainLogger - INFO -  Sentece Input (InputLayer)  [(None, 500)]                0         []                            
+2024-04-09 13:53:19,620 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,620 - MainLogger - INFO -  Sentence memory (InputLaye  [(None, 500)]                0         []                            
+2024-04-09 13:53:19,620 - MainLogger - INFO -  r)                                                                                               
+2024-04-09 13:53:19,621 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,621 - MainLogger - INFO -  Previous output (InputLaye  [(None, 100)]                0         []                            
+2024-04-09 13:53:19,621 - MainLogger - INFO -  r)                                                                                               
+2024-04-09 13:53:19,621 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,622 - MainLogger - INFO -  concatenate (Concatenate)   (None, 1100)                 0         ['Sentece Input[0][0]',       
+2024-04-09 13:53:19,622 - MainLogger - INFO -                                                                      'Sentence memory[0][0]',     
+2024-04-09 13:53:19,622 - MainLogger - INFO -                                                                      'Previous output[0][0]']     
+2024-04-09 13:53:19,622 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,623 - MainLogger - INFO -  dense (Dense)               (None, 50)                   55050     ['concatenate[0][0]']         
+2024-04-09 13:53:19,623 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,623 - MainLogger - INFO -  dense_60 (Dense)            (None, 100)                  110100    ['concatenate[0][0]']         
+2024-04-09 13:53:19,624 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,624 - MainLogger - INFO -  dense_1 (Dense)             (None, 45)                   2295      ['dense[0][0]']               
+2024-04-09 13:53:19,624 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,625 - MainLogger - INFO -  dense_61 (Dense)            (None, 105)                  10605     ['dense_60[0][0]']            
+2024-04-09 13:53:19,625 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,625 - MainLogger - INFO -  dense_2 (Dense)             (None, 40)                   1840      ['dense_1[0][0]']             
+2024-04-09 13:53:19,625 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,626 - MainLogger - INFO -  dense_62 (Dense)            (None, 110)                  11660     ['dense_61[0][0]']            
+2024-04-09 13:53:19,626 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,626 - MainLogger - INFO -  dense_3 (Dense)             (None, 35)                   1435      ['dense_2[0][0]']             
+2024-04-09 13:53:19,626 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,627 - MainLogger - INFO -  dense_63 (Dense)            (None, 115)                  12765     ['dense_62[0][0]']            
+2024-04-09 13:53:19,627 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,627 - MainLogger - INFO -  dense_4 (Dense)             (None, 30)                   1080      ['dense_3[0][0]']             
+2024-04-09 13:53:19,627 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,628 - MainLogger - INFO -  dense_64 (Dense)            (None, 120)                  13920     ['dense_63[0][0]']            
+2024-04-09 13:53:19,628 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,628 - MainLogger - INFO -  dense_5 (Dense)             (None, 25)                   775       ['dense_4[0][0]']             
+2024-04-09 13:53:19,628 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,629 - MainLogger - INFO -  dense_65 (Dense)            (None, 125)                  15125     ['dense_64[0][0]']            
+2024-04-09 13:53:19,629 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,629 - MainLogger - INFO -  dense_6 (Dense)             (None, 20)                   520       ['dense_5[0][0]']             
+2024-04-09 13:53:19,629 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,630 - MainLogger - INFO -  dense_66 (Dense)            (None, 130)                  16380     ['dense_65[0][0]']            
+2024-04-09 13:53:19,630 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,630 - MainLogger - INFO -  dense_7 (Dense)             (None, 15)                   315       ['dense_6[0][0]']             
+2024-04-09 13:53:19,631 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,631 - MainLogger - INFO -  dense_67 (Dense)            (None, 135)                  17685     ['dense_66[0][0]']            
+2024-04-09 13:53:19,631 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,631 - MainLogger - INFO -  dense_8 (Dense)             (None, 10)                   160       ['dense_7[0][0]']             
+2024-04-09 13:53:19,632 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,632 - MainLogger - INFO -  dense_68 (Dense)            (None, 140)                  19040     ['dense_67[0][0]']            
+2024-04-09 13:53:19,632 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,633 - MainLogger - INFO -  dense_9 (Dense)             (None, 10)                   110       ['dense_8[0][0]']             
+2024-04-09 13:53:19,633 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,633 - MainLogger - INFO -  dense_69 (Dense)            (None, 145)                  20445     ['dense_68[0][0]']            
+2024-04-09 13:53:19,633 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,634 - MainLogger - INFO -  dense_10 (Dense)            (None, 10)                   110       ['dense_9[0][0]']             
+2024-04-09 13:53:19,634 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,634 - MainLogger - INFO -  dense_70 (Dense)            (None, 150)                  21900     ['dense_69[0][0]']            
+2024-04-09 13:53:19,634 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,635 - MainLogger - INFO -  dense_11 (Dense)            (None, 10)                   110       ['dense_10[0][0]']            
+2024-04-09 13:53:19,635 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,635 - MainLogger - INFO -  dense_71 (Dense)            (None, 155)                  23405     ['dense_70[0][0]']            
+2024-04-09 13:53:19,636 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,636 - MainLogger - INFO -  dense_12 (Dense)            (None, 10)                   110       ['dense_11[0][0]']            
+2024-04-09 13:53:19,636 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,636 - MainLogger - INFO -  dense_72 (Dense)            (None, 160)                  24960     ['dense_71[0][0]']            
+2024-04-09 13:53:19,637 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,637 - MainLogger - INFO -  dense_13 (Dense)            (None, 15)                   165       ['dense_12[0][0]']            
+2024-04-09 13:53:19,637 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,638 - MainLogger - INFO -  dense_73 (Dense)            (None, 165)                  26565     ['dense_72[0][0]']            
+2024-04-09 13:53:19,638 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,638 - MainLogger - INFO -  dense_14 (Dense)            (None, 20)                   320       ['dense_13[0][0]']            
+2024-04-09 13:53:19,638 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,639 - MainLogger - INFO -  dense_74 (Dense)            (None, 170)                  28220     ['dense_73[0][0]']            
+2024-04-09 13:53:19,639 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,639 - MainLogger - INFO -  dense_15 (Dense)            (None, 25)                   525       ['dense_14[0][0]']            
+2024-04-09 13:53:19,639 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,640 - MainLogger - INFO -  dense_75 (Dense)            (None, 175)                  29925     ['dense_74[0][0]']            
+2024-04-09 13:53:19,640 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,640 - MainLogger - INFO -  dense_16 (Dense)            (None, 30)                   780       ['dense_15[0][0]']            
+2024-04-09 13:53:19,640 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,641 - MainLogger - INFO -  dense_76 (Dense)            (None, 180)                  31680     ['dense_75[0][0]']            
+2024-04-09 13:53:19,641 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,641 - MainLogger - INFO -  dense_17 (Dense)            (None, 35)                   1085      ['dense_16[0][0]']            
+2024-04-09 13:53:19,642 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,642 - MainLogger - INFO -  dense_77 (Dense)            (None, 185)                  33485     ['dense_76[0][0]']            
+2024-04-09 13:53:19,642 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,642 - MainLogger - INFO -  dense_18 (Dense)            (None, 40)                   1440      ['dense_17[0][0]']            
+2024-04-09 13:53:19,643 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,643 - MainLogger - INFO -  dense_78 (Dense)            (None, 190)                  35340     ['dense_77[0][0]']            
+2024-04-09 13:53:19,643 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,644 - MainLogger - INFO -  dense_19 (Dense)            (None, 45)                   1845      ['dense_18[0][0]']            
+2024-04-09 13:53:19,644 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,644 - MainLogger - INFO -  dense_79 (Dense)            (None, 195)                  37245     ['dense_78[0][0]']            
+2024-04-09 13:53:19,644 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,645 - MainLogger - INFO -  dense_20 (Dense)            (None, 100)                  4600      ['dense_19[0][0]']            
+2024-04-09 13:53:19,645 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,645 - MainLogger - INFO -  dense_80 (Dense)            (None, 200)                  39200     ['dense_79[0][0]']            
+2024-04-09 13:53:19,645 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,646 - MainLogger - INFO -  dense_21 (Dense)            (None, 105)                  10605     ['dense_20[0][0]']            
+2024-04-09 13:53:19,646 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,646 - MainLogger - INFO -  dense_81 (Dense)            (None, 195)                  39195     ['dense_80[0][0]']            
+2024-04-09 13:53:19,646 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,647 - MainLogger - INFO -  dense_22 (Dense)            (None, 110)                  11660     ['dense_21[0][0]']            
+2024-04-09 13:53:19,647 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,647 - MainLogger - INFO -  dense_82 (Dense)            (None, 190)                  37240     ['dense_81[0][0]']            
+2024-04-09 13:53:19,648 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,648 - MainLogger - INFO -  dense_23 (Dense)            (None, 115)                  12765     ['dense_22[0][0]']            
+2024-04-09 13:53:19,648 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,648 - MainLogger - INFO -  dense_83 (Dense)            (None, 185)                  35335     ['dense_82[0][0]']            
+2024-04-09 13:53:19,649 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,649 - MainLogger - INFO -  dense_24 (Dense)            (None, 120)                  13920     ['dense_23[0][0]']            
+2024-04-09 13:53:19,649 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,649 - MainLogger - INFO -  dense_84 (Dense)            (None, 180)                  33480     ['dense_83[0][0]']            
+2024-04-09 13:53:19,650 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,650 - MainLogger - INFO -  dense_25 (Dense)            (None, 125)                  15125     ['dense_24[0][0]']            
+2024-04-09 13:53:19,650 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,651 - MainLogger - INFO -  dense_85 (Dense)            (None, 175)                  31675     ['dense_84[0][0]']            
+2024-04-09 13:53:19,651 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,651 - MainLogger - INFO -  dense_26 (Dense)            (None, 130)                  16380     ['dense_25[0][0]']            
+2024-04-09 13:53:19,652 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,652 - MainLogger - INFO -  dense_86 (Dense)            (None, 170)                  29920     ['dense_85[0][0]']            
+2024-04-09 13:53:19,652 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,653 - MainLogger - INFO -  dense_27 (Dense)            (None, 135)                  17685     ['dense_26[0][0]']            
+2024-04-09 13:53:19,653 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,653 - MainLogger - INFO -  dense_87 (Dense)            (None, 165)                  28215     ['dense_86[0][0]']            
+2024-04-09 13:53:19,653 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,654 - MainLogger - INFO -  dense_28 (Dense)            (None, 140)                  19040     ['dense_27[0][0]']            
+2024-04-09 13:53:19,654 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,654 - MainLogger - INFO -  dense_88 (Dense)            (None, 160)                  26560     ['dense_87[0][0]']            
+2024-04-09 13:53:19,654 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,655 - MainLogger - INFO -  dense_29 (Dense)            (None, 145)                  20445     ['dense_28[0][0]']            
+2024-04-09 13:53:19,655 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,656 - MainLogger - INFO -  dense_89 (Dense)            (None, 155)                  24955     ['dense_88[0][0]']            
+2024-04-09 13:53:19,656 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,656 - MainLogger - INFO -  dense_30 (Dense)            (None, 150)                  21900     ['dense_29[0][0]']            
+2024-04-09 13:53:19,656 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,657 - MainLogger - INFO -  dense_90 (Dense)            (None, 150)                  23400     ['dense_89[0][0]']            
+2024-04-09 13:53:19,657 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,657 - MainLogger - INFO -  dense_31 (Dense)            (None, 155)                  23405     ['dense_30[0][0]']            
+2024-04-09 13:53:19,658 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,658 - MainLogger - INFO -  dense_91 (Dense)            (None, 145)                  21895     ['dense_90[0][0]']            
+2024-04-09 13:53:19,658 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,659 - MainLogger - INFO -  dense_32 (Dense)            (None, 160)                  24960     ['dense_31[0][0]']            
+2024-04-09 13:53:19,659 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,659 - MainLogger - INFO -  dense_92 (Dense)            (None, 140)                  20440     ['dense_91[0][0]']            
+2024-04-09 13:53:19,659 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,660 - MainLogger - INFO -  dense_33 (Dense)            (None, 165)                  26565     ['dense_32[0][0]']            
+2024-04-09 13:53:19,660 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,660 - MainLogger - INFO -  dense_93 (Dense)            (None, 135)                  19035     ['dense_92[0][0]']            
+2024-04-09 13:53:19,661 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,661 - MainLogger - INFO -  dense_34 (Dense)            (None, 170)                  28220     ['dense_33[0][0]']            
+2024-04-09 13:53:19,661 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,662 - MainLogger - INFO -  dense_94 (Dense)            (None, 130)                  17680     ['dense_93[0][0]']            
+2024-04-09 13:53:19,662 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,662 - MainLogger - INFO -  dense_35 (Dense)            (None, 175)                  29925     ['dense_34[0][0]']            
+2024-04-09 13:53:19,662 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,663 - MainLogger - INFO -  dense_95 (Dense)            (None, 125)                  16375     ['dense_94[0][0]']            
+2024-04-09 13:53:19,663 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,663 - MainLogger - INFO -  dense_36 (Dense)            (None, 180)                  31680     ['dense_35[0][0]']            
+2024-04-09 13:53:19,664 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,664 - MainLogger - INFO -  dense_96 (Dense)            (None, 120)                  15120     ['dense_95[0][0]']            
+2024-04-09 13:53:19,664 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,664 - MainLogger - INFO -  dense_37 (Dense)            (None, 185)                  33485     ['dense_36[0][0]']            
+2024-04-09 13:53:19,665 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,665 - MainLogger - INFO -  dense_97 (Dense)            (None, 115)                  13915     ['dense_96[0][0]']            
+2024-04-09 13:53:19,666 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,666 - MainLogger - INFO -  dense_38 (Dense)            (None, 190)                  35340     ['dense_37[0][0]']            
+2024-04-09 13:53:19,666 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,666 - MainLogger - INFO -  dense_98 (Dense)            (None, 110)                  12760     ['dense_97[0][0]']            
+2024-04-09 13:53:19,667 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,667 - MainLogger - INFO -  dense_39 (Dense)            (None, 195)                  37245     ['dense_38[0][0]']            
+2024-04-09 13:53:19,667 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,667 - MainLogger - INFO -  dense_99 (Dense)            (None, 105)                  11655     ['dense_98[0][0]']            
+2024-04-09 13:53:19,668 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,668 - MainLogger - INFO -  dense_40 (Dense)            (None, 200)                  39200     ['dense_39[0][0]']            
+2024-04-09 13:53:19,668 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,668 - MainLogger - INFO -  dense_100 (Dense)           (None, 50)                   5300      ['dense_99[0][0]']            
+2024-04-09 13:53:19,669 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,669 - MainLogger - INFO -  dense_41 (Dense)            (None, 195)                  39195     ['dense_40[0][0]']            
+2024-04-09 13:53:19,669 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,669 - MainLogger - INFO -  dense_101 (Dense)           (None, 45)                   2295      ['dense_100[0][0]']           
+2024-04-09 13:53:19,670 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,670 - MainLogger - INFO -  dense_42 (Dense)            (None, 190)                  37240     ['dense_41[0][0]']            
+2024-04-09 13:53:19,671 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,671 - MainLogger - INFO -  dense_102 (Dense)           (None, 40)                   1840      ['dense_101[0][0]']           
+2024-04-09 13:53:19,671 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,671 - MainLogger - INFO -  dense_43 (Dense)            (None, 185)                  35335     ['dense_42[0][0]']            
+2024-04-09 13:53:19,672 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,672 - MainLogger - INFO -  dense_103 (Dense)           (None, 35)                   1435      ['dense_102[0][0]']           
+2024-04-09 13:53:19,672 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,673 - MainLogger - INFO -  dense_44 (Dense)            (None, 180)                  33480     ['dense_43[0][0]']            
+2024-04-09 13:53:19,673 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,673 - MainLogger - INFO -  dense_104 (Dense)           (None, 30)                   1080      ['dense_103[0][0]']           
+2024-04-09 13:53:19,673 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,674 - MainLogger - INFO -  dense_45 (Dense)            (None, 175)                  31675     ['dense_44[0][0]']            
+2024-04-09 13:53:19,674 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,674 - MainLogger - INFO -  dense_105 (Dense)           (None, 25)                   775       ['dense_104[0][0]']           
+2024-04-09 13:53:19,674 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,675 - MainLogger - INFO -  dense_46 (Dense)            (None, 170)                  29920     ['dense_45[0][0]']            
+2024-04-09 13:53:19,675 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,675 - MainLogger - INFO -  dense_106 (Dense)           (None, 20)                   520       ['dense_105[0][0]']           
+2024-04-09 13:53:19,675 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,676 - MainLogger - INFO -  dense_47 (Dense)            (None, 165)                  28215     ['dense_46[0][0]']            
+2024-04-09 13:53:19,676 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,676 - MainLogger - INFO -  dense_107 (Dense)           (None, 15)                   315       ['dense_106[0][0]']           
+2024-04-09 13:53:19,677 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,677 - MainLogger - INFO -  dense_48 (Dense)            (None, 160)                  26560     ['dense_47[0][0]']            
+2024-04-09 13:53:19,677 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,677 - MainLogger - INFO -  dense_108 (Dense)           (None, 10)                   160       ['dense_107[0][0]']           
+2024-04-09 13:53:19,678 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,678 - MainLogger - INFO -  dense_49 (Dense)            (None, 155)                  24955     ['dense_48[0][0]']            
+2024-04-09 13:53:19,678 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,678 - MainLogger - INFO -  dense_109 (Dense)           (None, 10)                   110       ['dense_108[0][0]']           
+2024-04-09 13:53:19,679 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,679 - MainLogger - INFO -  dense_50 (Dense)            (None, 150)                  23400     ['dense_49[0][0]']            
+2024-04-09 13:53:19,679 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,680 - MainLogger - INFO -  dense_110 (Dense)           (None, 10)                   110       ['dense_109[0][0]']           
+2024-04-09 13:53:19,680 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,680 - MainLogger - INFO -  dense_51 (Dense)            (None, 145)                  21895     ['dense_50[0][0]']            
+2024-04-09 13:53:19,681 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,681 - MainLogger - INFO -  dense_111 (Dense)           (None, 10)                   110       ['dense_110[0][0]']           
+2024-04-09 13:53:19,681 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,682 - MainLogger - INFO -  dense_52 (Dense)            (None, 140)                  20440     ['dense_51[0][0]']            
+2024-04-09 13:53:19,682 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,682 - MainLogger - INFO -  dense_112 (Dense)           (None, 10)                   110       ['dense_111[0][0]']           
+2024-04-09 13:53:19,682 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,683 - MainLogger - INFO -  dense_53 (Dense)            (None, 135)                  19035     ['dense_52[0][0]']            
+2024-04-09 13:53:19,683 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,683 - MainLogger - INFO -  dense_113 (Dense)           (None, 15)                   165       ['dense_112[0][0]']           
+2024-04-09 13:53:19,683 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,684 - MainLogger - INFO -  dense_54 (Dense)            (None, 130)                  17680     ['dense_53[0][0]']            
+2024-04-09 13:53:19,684 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,684 - MainLogger - INFO -  dense_114 (Dense)           (None, 20)                   320       ['dense_113[0][0]']           
+2024-04-09 13:53:19,684 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,685 - MainLogger - INFO -  dense_55 (Dense)            (None, 125)                  16375     ['dense_54[0][0]']            
+2024-04-09 13:53:19,685 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,685 - MainLogger - INFO -  dense_115 (Dense)           (None, 25)                   525       ['dense_114[0][0]']           
+2024-04-09 13:53:19,685 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,686 - MainLogger - INFO -  dense_56 (Dense)            (None, 120)                  15120     ['dense_55[0][0]']            
+2024-04-09 13:53:19,687 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,687 - MainLogger - INFO -  dense_116 (Dense)           (None, 30)                   780       ['dense_115[0][0]']           
+2024-04-09 13:53:19,687 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,688 - MainLogger - INFO -  dense_57 (Dense)            (None, 115)                  13915     ['dense_56[0][0]']            
+2024-04-09 13:53:19,688 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,688 - MainLogger - INFO -  dense_117 (Dense)           (None, 35)                   1085      ['dense_116[0][0]']           
+2024-04-09 13:53:19,688 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,689 - MainLogger - INFO -  dense_58 (Dense)            (None, 110)                  12760     ['dense_57[0][0]']            
+2024-04-09 13:53:19,689 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,689 - MainLogger - INFO -  dense_118 (Dense)           (None, 40)                   1440      ['dense_117[0][0]']           
+2024-04-09 13:53:19,690 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,690 - MainLogger - INFO -  dense_59 (Dense)            (None, 105)                  11655     ['dense_58[0][0]']            
+2024-04-09 13:53:19,690 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,690 - MainLogger - INFO -  dense_119 (Dense)           (None, 45)                   1845      ['dense_118[0][0]']           
+2024-04-09 13:53:19,691 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,692 - MainLogger - INFO -  concatenate_1 (Concatenate  (None, 300)                  0         ['dense_19[0][0]',            
+2024-04-09 13:53:19,692 - MainLogger - INFO -  )                                                                   'dense_59[0][0]',            
+2024-04-09 13:53:19,692 - MainLogger - INFO -                                                                      'dense_99[0][0]',            
+2024-04-09 13:53:19,692 - MainLogger - INFO -                                                                      'dense_119[0][0]']           
+2024-04-09 13:53:19,693 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,693 - MainLogger - INFO -  dense_120 (Dense)           (None, 1000)                 301000    ['concatenate_1[0][0]']       
+2024-04-09 13:53:19,693 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,693 - MainLogger - INFO -  dense_121 (Dense)           (None, 900)                  900900    ['dense_120[0][0]']           
+2024-04-09 13:53:19,694 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,694 - MainLogger - INFO -  dense_122 (Dense)           (None, 800)                  720800    ['dense_121[0][0]']           
+2024-04-09 13:53:19,694 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,695 - MainLogger - INFO -  dense_123 (Dense)           (None, 700)                  560700    ['dense_122[0][0]']           
+2024-04-09 13:53:19,695 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,695 - MainLogger - INFO -  dense_124 (Dense)           (None, 600)                  420600    ['dense_123[0][0]']           
+2024-04-09 13:53:19,695 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,696 - MainLogger - INFO -  dense_125 (Dense)           (None, 500)                  300500    ['dense_124[0][0]']           
+2024-04-09 13:53:19,696 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,696 - MainLogger - INFO -  dense_126 (Dense)           (None, 400)                  200400    ['dense_125[0][0]']           
+2024-04-09 13:53:19,696 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,697 - MainLogger - INFO -  dense_127 (Dense)           (None, 300)                  120300    ['dense_126[0][0]']           
+2024-04-09 13:53:19,697 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,697 - MainLogger - INFO -  dense_128 (Dense)           (None, 200)                  60200     ['dense_127[0][0]']           
+2024-04-09 13:53:19,697 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,698 - MainLogger - INFO -  dense_129 (Dense)           (None, 175)                  35175     ['dense_128[0][0]']           
+2024-04-09 13:53:19,698 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,698 - MainLogger - INFO -  dense_130 (Dense)           (None, 150)                  26400     ['dense_129[0][0]']           
+2024-04-09 13:53:19,699 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,699 - MainLogger - INFO -  dense_131 (Dense)           (None, 140)                  21140     ['dense_130[0][0]']           
+2024-04-09 13:53:19,699 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,699 - MainLogger - INFO -  dense_132 (Dense)           (None, 130)                  18330     ['dense_131[0][0]']           
+2024-04-09 13:53:19,700 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,700 - MainLogger - INFO -  dense_133 (Dense)           (None, 120)                  15720     ['dense_132[0][0]']           
+2024-04-09 13:53:19,700 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,700 - MainLogger - INFO -  dense_134 (Dense)           (None, 110)                  13310     ['dense_133[0][0]']           
+2024-04-09 13:53:19,701 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,701 - MainLogger - INFO -  dense_135 (Dense)           (None, 100)                  11100     ['dense_134[0][0]']           
+2024-04-09 13:53:19,701 - MainLogger - INFO -                                                                                                   
+2024-04-09 13:53:19,701 - MainLogger - INFO - ==================================================================================================
+2024-04-09 13:53:19,707 - MainLogger - INFO - Total params: 5788465 (22.08 MB)
+2024-04-09 13:53:19,707 - MainLogger - INFO - Trainable params: 5788465 (22.08 MB)
+2024-04-09 13:53:19,708 - MainLogger - INFO - Non-trainable params: 0 (0.00 Byte)
+2024-04-09 13:53:19,708 - MainLogger - INFO - __________________________________________________________________________________________________
+2024-04-09 13:53:19,708 - MainLogger - INFO - loaded object Cognition
+2024-04-09 13:53:19,708 - MainLogger - INFO - Request recieved to save
+2024-04-09 13:53:19,708 - MainLogger - WARNING - Object FileLoader has no method save()
+2024-04-09 13:53:19,709 - MainLogger - WARNING - Object CLS_Loader has no method save()
+2024-04-09 13:53:19,709 - MainLogger - WARNING - Object Handler has no method save()
+2024-04-09 13:53:19,710 - MainLogger - WARNING - Object Memory has no method save()
+2024-04-09 13:53:19,710 - MainLogger - WARNING - Object Reward has no method save()
+2024-04-09 13:53:19,710 - MainLogger - WARNING - Object main_network has no method save()
+2024-04-09 13:53:19,711 - MainLogger - INFO - Saving main cognition model to Cognition//Model/main_model.keras

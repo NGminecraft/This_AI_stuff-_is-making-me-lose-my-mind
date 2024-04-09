@@ -1,8 +1,7 @@
-2024-03-29 15:32:52,752 - MainLogger - WARNING - Initializing Warnings
-2024-03-29 15:32:59,338 - MainLogger - WARNING - Object FileLoader has no method save()
-2024-03-29 15:32:59,339 - MainLogger - WARNING - Object CLS_Loader has no method save()
-2024-03-29 15:32:59,340 - MainLogger - WARNING - Object Handler has no method save()
-2024-03-29 15:32:59,341 - MainLogger - WARNING - Object Memory has no method save()
-2024-03-29 15:32:59,342 - MainLogger - WARNING - Object Reward has no method save()
-2024-03-29 15:32:59,342 - MainLogger - WARNING - Object main_network has no method save()
-2024-03-29 15:32:59,343 - MainLogger - WARNING - Object Cognition has no method save()
+2024-04-09 13:54:46,859 - MainLogger - WARNING - Initializing Warnings
+2024-04-09 13:54:54,315 - MainLogger - WARNING - Object FileLoader has no method save()
+2024-04-09 13:54:54,315 - MainLogger - WARNING - Object CLS_Loader has no method save()
+2024-04-09 13:54:54,315 - MainLogger - WARNING - Object Handler has no method save()
+2024-04-09 13:54:54,316 - MainLogger - WARNING - Object Memory has no method save()
+2024-04-09 13:54:54,316 - MainLogger - WARNING - Object Reward has no method save()
+2024-04-09 13:54:54,316 - MainLogger - WARNING - Object main_network has no method save()
