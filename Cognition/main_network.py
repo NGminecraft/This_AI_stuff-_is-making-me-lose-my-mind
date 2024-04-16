@@ -1,11 +1,13 @@
 from Cognition.memory_calling_layer import memory_layer
 import keras
+import tensorflow as tf
 import os
 from logging import INFO, DEBUG
 
 
-class main_network:
-    def __init__(self, model=None, logger=None, exceptions=None, path="Cognition/Data/Models/"):
+class main_network(keras.Model):
+    def __init__(self, model=None, logger=None, exceptions=None, path="Cognition/Data/Models/", *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.logger=logger
         self.shoud_log = bool(logger)
         self.exceptions = exceptions
@@ -80,6 +82,25 @@ class main_network:
         self.model = keras.Model(inputs=[sentence_input, sentecne_memory, previous_output], outputs=x)
         self.logger.log(INFO, 'Succsefully created the Main Cognition model')
         return self.model
+    
+    """Keras subclassing methods"""
+    def train_step(self, data):
+        x, y = data
+        with tf.GradientTape() as tape:
+            y_pred = self(x, training=True)
+            loss = self.compute_loss(y=y, y_pred=y_pred)
+            
+        trainable_vars = self.trainable_variables
+        gradients = tape.gradient(loss, trainable_vars)
+        self.optimizer.apply(gradients, trainable_vars)
+        
+        for metric in self.metrics:
+            if metric.name == "loss":
+                metric.update_state(loss)
+            else:
+                metric.update_state(y, y_pred)
+                
+        return {m.name: m.result() for m in self.metrics}
     
     def init_main_network(self, path="Cognition/Data/Model/main_model.keras"):
         if os.path.exists(path) and self.model is None:

@@ -7,7 +7,7 @@ class Padder:
 
     def pad(self, sequence:list, length_override:int=None, **kwargs):
         if length_override is None:
-            sequence.extend([self.value] * (self.length - len(sequence)))
-        else:
-            sequence.extend([self.value] * (length_override - len(sequence)))
+            length_override = self.length
+        sequence.extend([self.value] * (length_override - len(sequence)))
+        assert len(sequence) == length_override, f"Padder length is {len(sequence)}. It should be {length_override}"
         return sequence

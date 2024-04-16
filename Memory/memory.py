@@ -97,6 +97,9 @@ class Memory:
         else:
             pass
         
+    def get_word_id(self, word, category="word"):
+        pass
+        
     def _load_object_handler(self, path):
         loc = path + "/Data/object_dict.pickle"
         if self.file_loader.exists(loc):
