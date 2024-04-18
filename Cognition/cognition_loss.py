@@ -16,10 +16,9 @@ class Loss:
         
     def loss_function(self, y_true, pred):
         if self.user_input:
-            inp = self._ask_input()*self.weight
+            return self._ask_input()
         else:
-            inp = self.loss_model(pred)
-        current = keras.ops.add(self.loss(y_true, pred), inp)
+            return self.loss_model(pred)
     
     @staticmethod
     def _ask_input():

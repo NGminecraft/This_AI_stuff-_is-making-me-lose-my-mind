@@ -2,6 +2,7 @@ import numpy as np
 import os
 from Cognition.main_network import main_network
 from logging import INFO, DEBUG
+from Cognition.cognition_loss import Loss
 
 
 class Cognition:
