@@ -8,4 +8,4 @@ class loss_model:
         pass
     
     def init_model(self, path="Cognition/Data/Model/loss_model.keras"):
-        
+        pass
